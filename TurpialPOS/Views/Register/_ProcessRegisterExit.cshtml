@@ -1,0 +1,90 @@
+﻿@model DAL.DTO.RegisterExitDTO
+
+<div class="modal-dialog" role="document">
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Movimiento de Caja</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            @using (Html.BeginForm("ProcessRegisterExit", "Register", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col-md-2">
+
+                    </div>
+                    <div class="col-md-8">
+                        <label>Monto</label>
+                        @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", @step = "any", @type = "number" })
+                        <br />
+                        <label>Descripción</label>
+                        @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+                        <br />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+
+                    </div>
+                    <div class="col-md-4" style="text-align:center">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4>Salida de efectivo</h4>
+                                <span class="glyphicon glyphicon-log-out"></span><br />
+                                <input type="radio" name="CashEntering" value="false" checked />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" style="text-align:center">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4>Entrada de efectivo</h4>
+                                <span class="glyphicon glyphicon-log-in"></span><br />
+                                <input type="radio" name="CashEntering" value="true" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+
+                    </div>
+                </div>
+                <hr />
+                <div style="text-align:center">
+                    <button type="submit" class="btn btn-info">Aceptar</button>
+                </div>
+            }
+            <hr />
+            <h4>Movimientos de caja del día</h4>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Descrición</th>
+                        <th>Monto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var dto in Model.TodaysExits)
+                    {
+                        <tr>
+                            <td>@dto.Description</td>
+                            <td style="text-align:center">
+                                @if (dto.CashEntering)
+                                {
+                                    @String.Format("{0:C}", dto.Amount)
+                                }
+                                else
+                                {
+                                    <label style="color:red">(@String.Format("{0:C}", dto.Amount))</label>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

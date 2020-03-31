@@ -1,0 +1,342 @@
+﻿@model DAL.DTO.RegisterDTO
+
+<div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Abrir Caja</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            @using (Html.BeginForm("CloseRegister", "Register", FormMethod.Post, new { @class = "form-horizontal", role = "form", @onkeydown = "javascript:EnterKeyFilter();" }))
+            {
+                @Html.AntiForgeryToken()
+                <div>
+                    <text>Caja abierta por:</text> <strong> @Model.OpeningUsername</strong>
+                    <br />
+                    <small>(Por favor abrir la caja y contar cada uno de los billetes y monedas que se tienen)</small>
+                    <br />
+                    <br />
+                    @Html.HiddenFor(m => m.Id)
+                    @Html.HiddenFor(m => m.OpeningTime)
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-7" style="text-align:center">
+                                    <img src="~/Images/MoneyIcons/Hundredbill.png" width="100" height="42" />
+                                </div>
+                                <div class="col-md-5" style="padding-top: 6px; padding-right: 0px">
+                                    @Html.TextBoxFor(m => m.HundredBillsClosing, new { @id = "HundredBillsClosing", @type = "number", @class = "form-control register-closing", @value = 0 })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-7" style="text-align:center">
+                                    <img src="~/Images/MoneyIcons/FiftyBill.png" width="100" height="42" />
+                                </div>
+                                <div class="col-md-5" style="padding-top: 6px; padding-right: 0px">
+                                    @Html.TextBoxFor(m => m.FiftyBillsClosing, new { @id = "FiftyBillsClosing", @type = "number", @class = "form-control register-closing", @value = 0 })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-7" style="text-align:center">
+                                    <img src="~/Images/MoneyIcons/TwentyBill.png" width="100" height="42" />
+                                </div>
+                                <div class="col-md-5" style="padding-top: 6px; padding-right: 0px">
+                                    @Html.TextBoxFor(m => m.TwentyBillsClosing, new { @id = "TwentyBillsClosing", @type = "number", @class = "form-control register-closing", @value = 0 })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-7" style="text-align:center">
+                                    <img src="~/Images/MoneyIcons/TenBill.png" width="100" height="42" />
+                                </div>
+                                <div class="col-md-5" style="padding-top: 6px; padding-right: 0px">
+                                    @Html.TextBoxFor(m => m.TenBillsClosing, new { @id = "TenBillsClosing", @type = "number", @class = "form-control register-closing", @value = 0 })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-7" style="text-align:center">
+                                    <img src="~/Images/MoneyIcons/FiveBill.png" width="100" height="42" />
+                                </div>
+                                <div class="col-md-5" style="padding-top: 6px; padding-right: 0px">
+                                    @Html.TextBoxFor(m => m.FiveBillsClosing, new { @id = "FiveBillsClosing", @type = "number", @class = "form-control register-closing", @value = 0 })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-7" style="text-align:center">
+                                    <img src="~/Images/MoneyIcons/OneBill.png" width="100" height="42" />
+                                </div>
+                                <div class="col-md-5" style="padding-top: 6px; padding-right: 0px">
+                                    @Html.TextBoxFor(m => m.OneBillsClosing, new { @id = "OneBillsClosing", @type = "number", @class = "form-control register-closing", @value = 0 })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-7" style="text-align:center">
+                                    <img src="~/Images/MoneyIcons/OneCoin.png" width="58" height="42" />
+                                </div>
+                                <div class="col-md-5" style="padding-top: 6px; padding-right: 0px">
+                                    @Html.TextBoxFor(m => m.OneCoinsClosing, new { @id = "OneCoinsClosing", @type = "number", @class = "form-control register-closing", @value = 0 })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-7" style="text-align:center">
+                                    <img src="~/Images/MoneyIcons/FiftyCents.png" width="58" height="42" />
+                                </div>
+                                <div class="col-md-5" style="padding-top: 6px; padding-right: 0px">
+                                    @Html.TextBoxFor(m => m.FiftyCentsCoinsClosing, new { @id = "FiftyCentsCoinsClosing", @type = "number", @class = "form-control register-closing", @value = 0 })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-7" style="text-align:center">
+                                    <img src="~/Images/MoneyIcons/QuarterCents.png" width="58" height="42" />
+                                </div>
+                                <div class="col-md-5" style="padding-top: 6px; padding-right: 0px">
+                                    @Html.TextBoxFor(m => m.QuarterCoinsClosing, new { @id = "QuarterCoinsClosing", @type = "number", @class = "form-control register-closing", @value = 0 })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-7" style="text-align:center">
+                                    <img src="~/Images/MoneyIcons/TenCents.png" width="58" height="42" />
+                                </div>
+                                <div class="col-md-5" style="padding-top: 6px; padding-right: 0px">
+                                    @Html.TextBoxFor(m => m.TenCentsCoinsClosing, new { @id = "TenCentsCoinsClosing", @type = "number", @class = "form-control register-closing", @value = 0 })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-7" style="text-align:center">
+                                    <img src="~/Images/MoneyIcons/FiveCent.png" width="58" height="42" />
+                                </div>
+                                <div class="col-md-5" style="padding-top: 6px; padding-right: 0px">
+                                    @Html.TextBoxFor(m => m.FiveCentsCoinsClosing, new { @id = "FiveCentsCoinsClosing", @type = "number", @class = "form-control register-closing", @value = 0 })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-7" style="text-align:center">
+                                    <img src="~/Images/MoneyIcons/OneCent.png" width="58" height="42" />
+                                </div>
+                                <div class="col-md-5" style="padding-top: 6px; padding-right: 0px">
+                                    @Html.TextBoxFor(m => m.OneCentCoinsClosing, new { @id = "OneCentCoinsClosing", @type = "number", @class = "form-control register-closing", @value = 0 })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:center">
+                                        Monto inicial
+                                    </th>
+                                    <th style="text-align:center">
+                                        Monto esperado
+                                    </th>
+                                    <th style="text-align:center">
+                                        Monto actual
+                                    </th>
+                                    <th style="text-align:center">
+                                        Cuadre de caja
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tr>
+                                <td style="text-align:center">
+                                    <text>@string.Format("{0:C}", Model.OpeningAmount())
+                                </td>
+                                <td style="text-align:center">
+                                    <text id="registerShouldCloseResult">@string.Format("{0:C}", Model.ClosingShouldCash())</text>
+                                </td>
+                                <td style="text-align:center">
+                                    <text id="registerCloseResult">@string.Format("{0:C}", 0.00)</text>
+                                </td>
+                                <td style="text-align:center">
+                                    <img id="failIcon" src="~/Images/MoneyIcons/failIcon.png" />
+                                    <img style="display:none" id="success" src="~/Images/MoneyIcons/successIcon.jpg"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <hr />
+                    <h3>Transacciones</h3>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>N# de Transacciones</th>
+                                <th>Total en $</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <strong>Pagos en Efectivo</strong>
+                                </td>
+                                <td>
+                                    <text>@Model.CashInfo.IntValue</text>
+                                </td>
+                                <td>
+                                    <text>@string.Format("{0:C}", Model.CashInfo.DecimalValue)</text>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong> Pagos con Débito</strong></td>
+                                <td><text>@Model.DebitInfo.IntValue</text></td>
+                                <td>
+                                    <text>@string.Format("{0:C}", Model.DebitInfo.DecimalValue)</text>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong> Pagos con Crédito</strong></td>
+                                <td><text>@Model.CreditInfo.IntValue</text></td>
+                                <td>
+                                    <text>@string.Format("{0:C}", Model.CreditInfo.DecimalValue)</text>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong> Pagos con Cheque</strong></td>
+                                <td><text>@Model.CheckInfo.IntValue</text></td>
+                                <td>
+                                    <text>@string.Format("{0:C}", Model.CheckInfo.DecimalValue)</text>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong> Pagos con Transferencia</strong></td>
+                                <td><text>@Model.TransferInfo.IntValue</text></td>
+                                <td>
+                                    <text>@string.Format("{0:C}", Model.TransferInfo.DecimalValue)</text>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <hr />
+                    <h3>Movimientos de efectivo</h3>
+                    @if (Model.RegisterExists.Count > 0)
+                    {
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Descripción
+                                    </th>
+                                    <th>
+                                        Usuario
+                                    </th>
+                                    <th>
+                                        Monto
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var exit in Model.RegisterExists)
+                                {
+                                    <tr>
+                                        <td>@exit.Description</td>
+                                        <td>
+                                            @exit.Username
+                                        </td>
+                                        <td style="text-align:center">
+                                            @if (exit.CashEntering)
+                                            {
+                                                <p style="color:green">@string.Format("{0:C}", exit.Amount)</p>
+                                            }
+                                            else
+                                            {
+                                                <p style="color:red">(@string.Format("{0:C}", exit.Amount))</p>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2"></td>
+                                    <td>
+                                        <div style="text-align:center">
+                                            @if (Model.TotalExitsAmount() >= 0)
+                                            {
+                                                <strong style="color: green">@string.Format("{0:C}", Model.TotalExitsAmount())</strong>
+                                            }
+                                            else
+                                            {
+                                                <strong style="color: red">@string.Format("{0:C}", Model.TotalExitsAmount())</strong>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info" role="alert">No se presentaron salidas de efectivo a la caja.</div>
+                    }
+                    <hr />
+                    <div id="acceptButton" style="display:none;text-align:center" >
+                        <button type="submit" onClick="this.form.submit(); this.disabled=true;" class="btn btn-info">Aceptar</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var registerShouldClose = @Model.ClosingShouldCash();
+        $(".register-closing").change(function () {
+            var total = ($('#HundredBillsClosing').val() * 100) +
+                ($('#FiftyBillsClosing').val() * 50) +
+                ($('#TwentyBillsClosing').val() * 20) +
+                ($('#TenBillsClosing').val() * 10) +
+                ($('#FiveBillsClosing').val() * 5) +
+                ($('#OneBillsClosing').val() * 1) +
+                ($('#OneCoinsClosing').val() * 1) +
+                ($('#FiftyCentsCoinsClosing').val() * 0.5) +
+                ($('#QuarterCoinsClosing').val() * 0.25) +
+                ($('#TenCentsCoinsClosing').val() * 0.1) +
+                ($('#FiveCentsCoinsClosing').val() * 0.05) +
+                ($('#OneCentCoinsClosing').val() * 0.01);
+            $('#registerCloseResult').text(total.formatMoney(2));
+            if (registerShouldClose == total.toFixed(2)) {
+                $('#success').show();
+                $('#failIcon').hide();
+                $('#acceptButton').show();
+            }
+            else {
+                $('#failIcon').show();
+                $('#success').hide();
+                $('#acceptButton').hide();
+            }
+        });
+    });
+</script>

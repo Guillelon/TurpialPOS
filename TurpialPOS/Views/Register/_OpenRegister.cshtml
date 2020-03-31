@@ -1,0 +1,187 @@
+﻿@model DAL.DTO.RegisterDTO
+
+<div class="modal-dialog" role="document">
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Abrir Caja</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            @using (Html.BeginForm("OpenRegister", "Register", FormMethod.Post, new { @class = "form-horizontal", role = "form", @onkeydown="javascript:EnterKeyFilter();"  }))
+            {
+                @Html.AntiForgeryToken()
+                <small>(Por favor abrir la caja y contar cada uno de los billetes y monedas que se tienen)</small>
+                <br />
+                <br />
+                <div>
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6">
+                            <div class="row">
+                                <div class="col-md-6 col-xs-6">
+                                    <img src="~/Images/MoneyIcons/Hundredbill.png" width="121" height="51" />
+                                </div>
+                                <div class="col-md-6 col-xs-6" style="padding-top: 8px">
+                                    @Html.TextBoxFor(m => m.HundredBills, new { @id = "HundredBills", @type = "number", @class = "form-control register", @value = 0 })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-6">
+                            <div class="row">
+                                <div class="col-md-6 col-xs-6">
+                                    <img src="~/Images/MoneyIcons/FiftyBill.png" width="121" height="52" />
+                                </div>
+                                <div class="col-md-6 col-xs-6" style="padding-top: 8px">
+                                    @Html.TextBoxFor(m => m.FiftyBills, new { @id = "FiftyBills", @type = "number", @class = "form-control register", @value = 0 })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6">
+                            <div class="row">
+                                <div class="col-md-6 col-xs-6">
+                                    <img src="~/Images/MoneyIcons/TwentyBill.png" width="121" height="52" />
+                                </div>
+                                <div class="col-md-6 col-xs-6" style="padding-top: 8px">
+                                    @Html.TextBoxFor(m => m.TwentyBills, new { @id = "TwentyBills", @type = "number", @class = "form-control register", @value = 0 })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-6">
+                            <div class="row">
+                                <div class="col-md-6 col-xs-6">
+                                    <img src="~/Images/MoneyIcons/TenBill.png" width="121" height="52" />
+                                </div>
+                                <div class="col-md-6 col-xs-6" style="padding-top: 8px">
+                                    @Html.TextBoxFor(m => m.TenBills, new { @id = "TenBills", @type = "number", @class = "form-control register", @value = 0 })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6">
+                            <div class="row">
+                                <div class="col-md-6 col-xs-6">
+                                    <img src="~/Images/MoneyIcons/FiveBill.png" width="121" height="52" />
+                                </div>
+                                <div class="col-md-6 col-xs-6" style="padding-top: 8px">
+                                    @Html.TextBoxFor(m => m.FiveBills, new { @id = "FiveBills", @type = "number", @class = "form-control register", @value = 0 })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-6">
+                            <div class="row">
+                                <div class="col-md-6 col-xs-6">
+                                    <img src="~/Images/MoneyIcons/OneBill.png" width="121" height="52" />
+                                </div>
+                                <div class="col-md-6 col-xs-6" style="padding-top: 8px">
+                                    @Html.TextBoxFor(m => m.OneBills, new { @id = "OneBills", @type = "number", @class = "form-control register", @value = 0 })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6">
+                            <div class="row">
+                                <div class="col-md-6 col-xs-6" style="text-align:center">
+                                    <img src="~/Images/MoneyIcons/OneCoin.png" width="79" height="57" />
+                                </div>
+                                <div class="col-md-6 col-xs-6" style="padding-top: 8px">
+                                    @Html.TextBoxFor(m => m.OneCoins, new { @id = "OneCoins", @type = "number", @class = "form-control register", @value = 0 })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-6">
+                            <div class="row">
+                                <div class="col-md-6 col-xs-6" style="text-align:center">
+                                    <img src="~/Images/MoneyIcons/FiftyCents.png" width="79" height="57" />
+                                </div>
+                                <div class="col-md-6 col-xs-6" style="padding-top: 8px">
+                                    @Html.TextBoxFor(m => m.FiftyCentsCoins, new { @id = "FiftyCentsCoins", @type = "number", @class = "form-control register", @value = 0 })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6">
+                            <div class="row">
+                                <div class="col-md-6 col-xs-6" style="text-align:center">
+                                    <img src="~/Images/MoneyIcons/QuarterCents.png" width="79" height="57" />
+                                </div>
+                                <div class="col-md-6 col-xs-6" style="padding-top: 8px">
+                                    @Html.TextBoxFor(m => m.QuarterCoins, new { @id = "QuarterCoins", @type = "number", @class = "form-control register", @value = 0 })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-6">
+                            <div class="row">
+                                <div class="col-md-6 col-xs-6" style="text-align:center">
+                                    <img src="~/Images/MoneyIcons/TenCents.png" width="79" height="57" />
+                                </div>
+                                <div class="col-md-6 col-xs-6" style="padding-top: 8px">
+                                    @Html.TextBoxFor(m => m.TenCentsCoins, new { @id = "TenCentsCoins", @type = "number", @class = "form-control register", @value = 0 })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6">
+                            <div class="row">
+                                <div class="col-md-6 col-xs-6" style="text-align:center">
+                                    <img src="~/Images/MoneyIcons/FiveCent.png" width="79" height="57" />
+                                </div>
+                                <div class="col-md-6 col-xs-6" style="padding-top: 8px">
+                                    @Html.TextBoxFor(m => m.FiveCentsCoins, new { @id = "FiveCentsCoins", @type = "number", @class = "form-control register", @value = 0 })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-6">
+                            <div class="row">
+                                <div class="col-md-6 col-xs-6" style="text-align:center">
+                                    <img src="~/Images/MoneyIcons/OneCent.png" width="79" height="57" />
+                                </div>
+                                <div class="col-md-6 col-xs-6" style="padding-top: 8px">
+                                    @Html.TextBoxFor(m => m.OneCentCoins, new { @id = "OneCentCoins", @type = "number", @class = "form-control register", @value = 0 })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div style="text-align:center" class="alert alert-success" role="alert">
+                        <strong>Total: <text id="registerOpenResult">$0.00</text></strong>
+                    </div>
+                </div>
+                <hr />
+                <div style="text-align:center">
+                    <button type="submit" onClick="this.form.submit(); this.disabled=true;" class="btn btn-info">Aceptar</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".register").change(function () {
+            var total = ($('#HundredBills').val() * 100) +
+                ($('#FiftyBills').val() * 50) +
+                ($('#TwentyBills').val() * 20) +
+                ($('#TenBills').val() * 10) +
+                ($('#FiveBills').val() * 5) +
+                ($('#OneBills').val() * 1) +
+                ($('#OneCoins').val() * 1) +
+                ($('#FiftyCentsCoins').val() * 0.5) +
+                ($('#QuarterCoins').val() * 0.25) +
+                ($('#TenCentsCoins').val() * 0.1) +
+                ($('#FiveCentsCoins').val() * 0.05) +
+                ($('#OneCentCoins').val() * 0.01);
+            $('#registerOpenResult').text(total.formatMoney(2));
+        });
+    });
+</script>

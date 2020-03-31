@@ -1,0 +1,358 @@
+﻿@model IList<DAL.Models.Product>
+@{
+    Layout = null;
+}
+
+<div id="inventoryDashboard">
+    <div class="card">
+        <div class="card-body">
+            <div class="alert alert-success" role="alert" data-bind="visible: ShowSucessMessage">
+                <text data-bind="text: SucessMessage"></text>
+            </div>
+            <button data-bind="click: ShowAddProduct" class="btn btn-info btn-lg">Agregar Producto</button>
+            <table class="table table-bordered" style="margin-top:25px">
+                <thead>
+                    <tr>
+                        <th>
+                            Nombre
+                        </th>
+                        <th>
+                            Descripción
+                        </th>
+                        <th>
+                            Tipo
+                        </th>
+                        <th>
+                            Precio
+                        </th>
+                        <th>
+                            Costo
+                        </th>
+                        <th>
+
+                        </th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: Products">
+                    <tr>
+                        <td>
+                            <text data-bind="text: $data.Name"></text>
+                        </td>
+                        <td>
+                            <text data-bind="text: $data.Description"></text>
+                        </td>
+                        <td>
+                            <text data-bind="text: $data.ProductType"></text>
+                        </td>
+                        <td>
+                            <text data-bind="text: $data.Price.formatMoney(2)"></text>
+                        </td>
+                        <td>
+                            <text data-bind="text: $data.Cost.formatMoney(2)"></text>
+                        </td>
+                        <td style="text-align:center">
+                            <button data-bind="click: $parent.ShowEditProduct, attr: { id: $data.Id }" class="btn btn-info btn-sm">Editar</button>
+                            &nbsp;&nbsp;
+                            <button class="btn btn-danger btn-sm" data-bind="click: $parent.ShowDeleteProduct, attr: { id: $data.Id }">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="addProductModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Agregar/Editar Producto
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body">
+                            <div data-bind="visible: ShowNewError" class="alert alert-danger" role="alert">
+                                Todos los campos son mandatorios.
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Nombre:</label>
+                                    <input class="form-control" data-bind="value: NewName" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Tipo:</label>
+                                    <select class="form-control"
+                                            data-bind="options: ProductTypes,
+                                                       optionsText: 'Name',
+                                                       optionsValue: 'Id',
+                                                       value: NewProductType,
+                                                       optionsCaption: 'Seleccionar Tipo'"></select>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 20px">
+                                <div class="col-md-6">
+                                    <label>Precio:</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">$</span>
+                                        </div>
+                                        <input data-bind="value: NewPrice" type="number" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Costo:</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">$</span>
+                                        </div>
+                                        <input data-bind="value: NewCost" type="number" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 20px">
+                                <div class="col-md-12">
+                                    <label>Código de barras:</label>
+                                    <input data-bind="value: NewBarCode" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 20px">
+                                <div class="col-md-12">
+                                    <label>Descripción:</label>
+                                    <textarea data-bind="value: NewDescription" rows="2" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div style="text-align:center">
+                        <button data-bind="click: AddProduct" class="btn btn-info">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="deleteProductModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Eliminar Producto
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Nombre:</label>
+                                    <input class="form-control" data-bind="value: NewName" disabled />
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Tipo:</label>
+                                    <select class="form-control"
+                                            data-bind="options: ProductTypes,
+                                                       optionsText: 'Name',
+                                                       optionsValue: 'Id',
+                                                       value: NewProductType,
+                                                       optionsCaption: 'Seleccionar Tipo'" disabled></select>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 20px">
+                                <div class="col-md-6">
+                                    <label>Precio:</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">$</span>
+                                        </div>
+                                        <input data-bind="value: NewPrice" type="number" class="form-control" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Costo:</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">$</span>
+                                        </div>
+                                        <input data-bind="value: NewCost" type="number" class="form-control" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 20px">
+                                <div class="col-md-12">
+                                    <label>Código de barras:</label>
+                                    <input data-bind="value: NewBarCode" class="form-control" disabled />
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 20px">
+                                <div class="col-md-12">
+                                    <label>Descripción:</label>
+                                    <textarea data-bind="value: NewDescription" rows="2" class="form-control" disabled></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div style="text-align:center">
+                        <button data-bind="click: DeleteProduct" class="btn btn-danger">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        function InventoryDashboard() {
+            var self = this;
+            self.Products = ko.observableArray();
+            self.ProductTypes = ko.observableArray();
+            self.ShowSucessMessage = ko.observable(false);
+            self.SucessMessage = ko.observable();
+
+            self.ShowSuccessMessageAction = function (message) {
+                self.ShowSucessMessage(true);
+                self.SucessMessage(message);
+            }
+
+            //New Product
+            self.NewProductId = 0;
+            self.NewName = ko.observable();
+            self.NewProductType = ko.observable();
+            self.NewPrice = ko.observable();
+            self.NewCost = ko.observable();
+            self.NewBarCode = ko.observable();
+            self.NewDescription = ko.observable();
+            self.ShowNewError = ko.observable(false);
+
+            self.GetProducts = function () {
+                $('#mainContentArea').hide();
+                $('#mainContentLoading').show();
+                $.ajax({
+                    url: '/Inventory/GetProducts',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        self.Products(data);
+                        $('#mainContentArea').show();
+                        $('#mainContentLoading').hide();
+                    }
+                });
+            }
+
+            self.GetProduct = function (id) {
+                self.NewProductId = id;
+                $.ajax({
+                    url: '/Inventory/GetProduct/' + id,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        self.NewName(data.Name);
+                        self.NewProductType(data.ProductType);
+                        self.NewPrice(data.Price);
+                        self.NewCost(data.Cost);
+                        self.NewBarCode(data.CodeBar);
+                        self.NewDescription(data.Description);
+                    }
+                });
+            }
+
+            self.GetProductTypes = function () {
+                $.ajax({
+                    url: '/Inventory/GetProductTypes',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        self.ProductTypes(data);
+                    }
+                });
+            }
+
+            self.GetData = function () {
+                self.GetProducts();
+                self.GetProductTypes();
+            }
+
+            self.ShowAddProduct = function () {
+                self.NewProductId = 0;
+                self.NewName('');
+                self.NewProductType(null);
+                self.NewPrice(0);
+                self.NewCost(0);
+                self.NewBarCode('');
+                self.NewDescription('');
+                $('#addProductModal').modal('show');
+            }
+
+            self.ShowEditProduct = function (data, event) {
+                var id = event.target.id;
+                self.GetProduct(id);
+                $('#addProductModal').modal('show');
+            }
+
+            self.ShowDeleteProduct = function (data, event) {
+                var id = event.target.id;
+                self.GetProduct(id);
+                $('#deleteProductModal').modal('show');
+            }
+
+            self.AddProduct = function () {
+                if (self.NewName() != null && self.NewName().length > 0
+                    && self.NewPrice() != null && self.NewPrice() > 0
+                    && self.NewCost() != null && self.NewCost() > 0
+                    && self.NewBarCode() != null && self.NewBarCode().length > 0
+                    && self.NewDescription() != null && self.NewDescription().length > 0
+                    && self.NewProductType() != null) {
+                    self.ShowNewError(false);
+                    var data = {
+                        Name: self.NewName(), Price: self.NewPrice(), Cost: self.NewCost(),
+                        CodeBar: self.NewBarCode(), Description: self.NewDescription(),
+                        ProductTypeId: self.NewProductType(), Id: self.NewProductId
+                    };
+                    $.ajax({
+                        url: '/Inventory/AddProduct/',
+                        type: 'POST',
+                        contentType: "application/json",
+                        data: JSON.stringify({ model: data }),
+                        success: function () {
+                            self.GetProducts();
+                            self.ShowSuccessMessageAction("El producto fue guardado con éxito.");
+                            $('#addProductModal').modal('hide');
+                        }
+                    });
+                }
+                else {
+                    self.ShowNewError(true);
+                }
+            }
+
+            self.DeleteProduct = function () {
+                var data = {
+                    Id: self.NewProductId
+                };
+                $.ajax({
+                    url: '/Inventory/DeleteProduct/',
+                    type: 'POST',
+                    contentType: "application/json",
+                    data: JSON.stringify({ model: data }),
+                    success: function () {
+                        self.GetProducts();
+                        self.ShowSuccessMessageAction('El producto fue eliminado con éxito.');
+                        $('#deleteProductModal').modal('hide');
+                    }
+                });
+            }
+        }
+
+        var inventoryDashboard = new InventoryDashboard();
+        var inventoryDashboardNode = document.getElementById('inventoryDashboard');
+        ko.applyBindings(inventoryDashboard, inventoryDashboardNode);
+        inventoryDashboard.GetData();
+    })
+</script>

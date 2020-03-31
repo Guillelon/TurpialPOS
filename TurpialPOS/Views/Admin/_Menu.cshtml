@@ -1,0 +1,177 @@
+﻿@{
+    Layout = null;
+}
+
+<!-- Main sidebar -->
+<div class="sidebar sidebar-dark sidebar-main sidebar-expand-md">
+    <!-- Sidebar mobile toggler -->
+    <div class="sidebar-mobile-toggler text-center">
+        <a href="#/" class="sidebar-mobile-main-toggle">
+            <i class="icon-arrow-left8"></i>
+        </a>
+        Navigation
+        <a href="#/" class="sidebar-mobile-expand">
+            <i class="icon-screen-full"></i>
+            <i class="icon-screen-normal"></i>
+        </a>
+    </div>
+    <!-- /sidebar mobile toggler -->
+    <!-- Sidebar content -->
+    <div class="sidebar-content" style="padding-top: 50px">
+        @{
+            string CurrentURL = Request.Url.AbsoluteUri;
+        }
+        <div class="card card-sidebar-mobile">
+            <ul class="nav nav-sidebar" data-nav-type="accordion">
+
+                <li class="nav-item nav-item-submenu">
+                    <a href="#/" class="nav-link menu-link parent-link"><i class="fa fa-money"></i> <span>Acciones de Caja</span></a>
+                    <ul class="nav nav-group-sub" data-submenu-title="Layouts">
+                        @if (!Model.OpenRegister && !Model.ClosedRegister)
+                        {
+                            <li class="nav-item">
+                                @if (Model.OldOpenRegister)
+                                {
+                                    <a href="#/" id="closeRegister" class="nav-link menu-link">Cerrar Caja Antigua</a>
+                                }
+                                else
+                                {
+                                    <a href="#/" id="openRegister" class="nav-link menu-link">Abrir Caja</a>
+                                }
+                            </li>
+                        }
+                        else if (Model.OpenRegister && !Model.ClosedRegister)
+                        {
+                            <li class="nav-item">
+                                <a href="#/" id="processPayment" class="nav-link menu-link">Procesar Pago</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#/" id="processRegisterExit" class="nav-link menu-link">Movimiento de Caja</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#/" id="closeRegister" class="nav-link menu-link">Cerrar Caja</a>
+                            </li>
+                        }
+                    </ul>
+                </li>
+
+                <li class="nav-item nav-item-submenu">
+                    <a href="#/" class="nav-link menu-link parent-link"><i class="fa fa-calculator"></i> <span>Inventario</span></a>
+                    <ul class="nav nav-group-sub" data-submenu-title="Layouts">
+                        <li class="nav-item">
+                            <a href="#/" id="/Inventory/Index" class="nav-link menu-link-custom">Ver Inventario</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item nav-item-submenu">
+                    <a href="#/" class="nav-link menu-link parent-link"><i class="fa fa-user"></i> <span>Clientes</span></a>
+                    <ul class="nav nav-group-sub" data-submenu-title="Layouts">
+                        <li class="nav-item">
+                            <a href="#/" id="/Client/Index" class="nav-link menu-link-custom">Ver Clientes</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div id="openRegisterModal" class="modal" tabindex="-1">
+</div>
+
+<div id="closeRegisterModal" class="modal" tabindex="-1">
+</div>
+
+<div id="processRegisterExitModal" class="modal" tabindex="-1">
+</div>
+
+<div id="paymentModal" class="modal" tabindex="-1">
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('.menu-link-custom').click(function (event) {
+            var self = $(this);
+            var urlFromElementId = self.attr('id');
+            if (urlFromElementId != '/Reports/Index') {
+                ShowLoading();
+                $('#mainContentArea').html('');
+                $.ajax({
+                    url: urlFromElementId,
+                    type: 'GET',
+                    dataType: 'html',
+                    success: function (data) {
+                        $('#mainContentArea').html(data);
+                    }
+                });
+            }
+            $('.menu-link-custom').removeClass("active");
+            if (!self.hasClass('parent-link')) {
+                $(".nav-item-submenu").each(function () {
+                    if ($(this).find(self).length == 0) {
+                        $(this).removeClass("nav-item-open");
+                        $(this).children("ul").hide("slow");
+                    }
+                });
+            }
+            self.addClass("active");
+        });
+
+        function ShowMainContent() {
+            $('#mainContentArea').show();
+            $('#mainContentLoading').hide();
+        }
+
+        function ShowLoading() {
+            $('#mainContentLoading').show();
+            $('#mainContentArea').hide();
+        }
+
+        //Register Functions
+        $('#openRegister').click(function () {
+            $.ajax({
+                url: '/Register/OpenRegister',
+                type: 'GET',
+                success: function (data) {
+                    $('#openRegisterModal').html(data);
+                    $('#openRegisterModal').modal('show');
+                }
+            });
+        });
+
+        $('#closeRegister').click(function () {
+            $.ajax({
+                url: '/Register/CloseRegister',
+                type: 'GET',
+                success: function (data) {
+                    $('#closeRegisterModal').html(data);
+                    $('#closeRegisterModal').modal('show');
+                }
+            });
+        });
+
+        $('#processRegisterExit').click(function () {
+            $.ajax({
+                url: '/Register/ProcessRegisterExit',
+                type: 'GET',
+                success: function (data) {
+                    $('#processRegisterExitModal').html(data);
+                    $('#processRegisterExitModal').modal('show');
+                }
+            });
+        })
+
+        $('#processPayment').click(function () {
+             $.ajax({
+                url: '/Payment/BeginPayment',
+                type: 'GET',
+                success: function (data) {
+                    $('#paymentModal').html(data);
+                    $('#paymentModal').modal('show');
+                }
+            });
+        });
+    })
+</script>

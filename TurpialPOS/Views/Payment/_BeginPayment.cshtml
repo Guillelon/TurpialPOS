@@ -1,0 +1,263 @@
+﻿<style>
+    .payment-types {
+        padding-top: 15px;
+        padding-bottom: 15px;
+        cursor: pointer;
+        text-align: center;
+        margin-bottom: 35px;
+        margin-top: 35px
+    }
+
+    .payment-types-selected {
+        border: 5px solid #1C6EA4;
+        border-radius: 5px 5px 5px 5px;
+    }
+
+    .payment-types-un-selected {
+        border: 5px solid #ffffff;
+        border-radius: 5px 5px 5px 5px;
+    }
+</style>
+
+<div class="modal-dialog modal-lg" style="max-width: 1200px" role="document" id="paymentDashboard">
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Procesar Pago</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body" style="height:700px">
+            <div class="row">
+                <div class="col-md-8 col-lg-8 col-xs-6">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th width="45%">
+                                    Producto
+                                </th>
+                                <th style="text-align:center" width="15%">
+                                    Precio
+                                </th>
+                                <th style="text-align:center" width="15%">
+                                    Cantidad
+                                </th>
+                                <th style="text-align:center" width="15%">
+                                    Total
+                                </th>
+                                <th width="10%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <select class="form-control" data-bind="options: AvailableProducts,
+                                                                    optionsText: function(item) {
+                                                                        return item.Name + ' ($' + item.Price + ')'
+                                                                    },
+                                                                    optionsValue: 'Id',
+                                                                    value: SelectedProduct,
+                                                                    optionsCaption: 'Seleccionar Producto'"></select>
+                                </td>
+                                <td>
+                                    <input data-bind="value: SelectedProductPrice().formatMoney(2)" class="form-control" disabled />
+                                </td>
+                                <td>
+                                    <input type="number" data-bind="value: SelectedProductQuantity, enable:ProductSelected" class="form-control" />
+                                </td>
+                                <td style="text-align:center">
+                                    <strong>
+                                        <text data-bind="text: SelectedProductTotal().formatMoney(2)"></text>
+                                    </strong>
+                                </td>
+                                <td>
+                                    <div style="text-align:center" data-bind="visible: ProductSelected">
+                                        <i data-bind="click: AddDetail" style="cursor: pointer" class="fa fa-check fa-lg"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody data-bind="foreach: Details">
+                            <tr>
+                                <td data-bind="text: Description">
+                                </td>
+                                <td style="text-align:center" data-bind="text: Price.formatMoney(2)">
+                                </td>
+                                <td style="text-align:center" data-bind="text: Quantity">
+                                </td>
+                                <td style="text-align:center; font-weight:bold" data-bind="text: Total().formatMoney(2)">
+                                </td>
+                                <td>
+                                    <div style="text-align:center">
+                                        <i data-bind="click: $root.RemoveDetail" style="cursor: pointer" class="fa fa-remove fa-lg"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot data-bind="visible: Details().length > 0">
+                            <tr>
+                                <td colspan="3">
+                                </td>
+                                <td colspan="2" style="text-align:center">
+                                    <strong data-bind="text: Total().formatMoney(2)"></strong>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="col-md-4 col-lg-4 col-xs-6" style="height:inherit">
+                    <div class="card">
+                        <div class="card-body">
+                            <div style="text-align:center">
+                                <h1>Total a pagar</h1>
+                                <h1 data-bind="text: Total().formatMoney(2)"></h1>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div data-bind="click: SelectPaymentType.bind(this,1),css: CashCssClass" class="col-md-6 payment-types">
+                                    <img width="85" src="~/Images/cashLogo.png" />
+                                </div>
+                                <div data-bind="click: SelectPaymentType.bind(this,2),css: CheckCssClass" class="col-md-6 payment-types">
+                                    <img width="85" src="~/Images/checkLogo.png" />
+                                </div>
+                                <div data-bind="click: SelectPaymentType.bind(this,3),css: CreditCardCssClass" class="col-md-6 payment-types">
+                                    <img width="85" height="55"  src="~/Images/creditCardLogo.png" />
+                                </div>
+                                <div data-bind="click: SelectPaymentType.bind(this,4),css: DebitCardCssClass" class="col-md-6 payment-types">
+                                    <img width="85"  height="55"  src="~/Images/debitCardLogo.png" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        function PaymentDashboard() {
+            var self = this;
+            self.DetailId = 1;
+            self.Details = ko.observableArray();
+            self.AvailableProducts = ko.observableArray();
+            self.SelectedProduct = ko.observable();
+            self.SelectedProductPrice = ko.observable(0);
+            self.SelectedProductDescription = ko.observable();
+            self.SelectedProductQuantity = ko.observable(0);
+            self.SelectedProductQuantity.subscribe(function (newValue) {
+                self.SelectedProductTotal(self.SelectedProductPrice() * newValue);
+            });
+            self.SelectedTax = 0;
+
+            //PaymentType
+            self.CashCssClass = ko.observable('payment-types-selected');
+            self.CheckCssClass = ko.observable('payment-types-un-selected');
+            self.CreditCardCssClass = ko.observable('payment-types-un-selected');
+            self.DebitCardCssClass = ko.observable('payment-types-un-selected');
+            self.SelectedPaymentType = @TurpialPOS.Resource.PaymentTypes.Cash;
+
+            self.SelectPaymentType = function (paymentType) {
+                self.SetAllPaymentTypesAsFalse();
+                if (paymentType == 1) {
+                    self.SelectedPaymentType = @TurpialPOS.Resource.PaymentTypes.Cash;
+                    self.CashCssClass('payment-types-selected');
+                }
+                else if (paymentType == 2) {
+                    self.SelectedPaymentType = @TurpialPOS.Resource.PaymentTypes.Check;
+                    self.CheckCssClass('payment-types-selected');
+                }
+                else if (paymentType == 3) {
+                    self.SelectedPaymentType = @TurpialPOS.Resource.PaymentTypes.Credit;
+                    self.CreditCardCssClass('payment-types-selected');
+                }
+                else if (paymentType == 4) {
+                    self.SelectedPaymentType = @TurpialPOS.Resource.PaymentTypes.Debit;
+                    self.DebitCardCssClass('payment-types-selected');
+                }
+            }
+
+            self.SetAllPaymentTypesAsFalse = function () {
+                self.CashCssClass('payment-types-un-selected');
+                self.CheckCssClass('payment-types-un-selected');
+                self.CreditCardCssClass('payment-types-un-selected');
+                self.DebitCardCssClass('payment-types-un-selected');
+            }
+
+            self.SelectedProductTotal = ko.observable(0);
+
+            self.ProductSelected = ko.observable(false);
+
+            self.SelectedProduct.subscribe(function (newValue) {
+                var selectedProduct = ko.utils.arrayFirst(self.AvailableProducts(), function (item) {
+                    return item.Id === newValue;
+                });
+                if (selectedProduct != null) {
+                    self.SelectedProductPrice(selectedProduct.Price);
+                    self.SelectedProductQuantity(1);
+                    self.SelectedProductDescription(selectedProduct.Name);
+                    self.SelectedTax = selectedProduct.Tax;
+                    self.ProductSelected(true);
+                }
+                else {
+                    self.ProductSelected(false);
+                    self.SelectedProductPrice(0);
+                    self.SelectedProductQuantity(0);
+                }
+            });
+
+            self.GetData = function () {
+                $.ajax({
+                    url: '/Inventory/GetProducts/',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        self.AvailableProducts(data);
+                    }
+                });
+            }
+
+            self.AddDetail = function () {
+                var data = {
+                    Id: self.DetailId, Description: self.SelectedProductDescription(),
+                    Price: self.SelectedProductPrice(), Quantity: self.SelectedProductQuantity()
+                }
+                var newDetail = new Detail(data);
+                self.Details.push(newDetail);
+                self.SelectedProductQuantity(0);
+                self.SelectedProductPrice(0);
+                self.SelectedProduct(null);
+                self.DetailId++;
+            }
+
+            self.RemoveDetail = function (detailToDelete) {
+                self.Details.remove(function (detail) {
+                    return detail.Id === detailToDelete.Id;
+                });
+            }
+
+            self.Total = ko.computed(function () {
+                var total = 0;
+                ko.utils.arrayForEach(self.Details(), function (detail) {
+                    total += detail.Price * detail.Quantity();
+                });
+                return total;
+            })
+        }
+
+        function Detail(data) {
+            var self = this;
+            self.Id = data.Id;
+            self.Description = data.Description;
+            self.Price = data.Price;
+            self.Quantity = ko.observable(data.Quantity);
+            self.Total = ko.observable(self.Price * self.Quantity());
+            self.Tax = data.Tax;
+        }
+
+        var paymentDashboard = new PaymentDashboard();
+        var paymentDashboardNode = document.getElementById('paymentDashboard');
+        ko.applyBindings(paymentDashboard, paymentDashboardNode);
+        paymentDashboard.GetData();
+    });
+</script>

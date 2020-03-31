@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turpial POS</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap_limitless.min.css" rel="stylesheet" />
+    <link href="~/Content/icomoon/styles.css" rel="stylesheet" />
+    <link href="~/Content/fontawesome/styles.min.css" rel="stylesheet" />
+    <link href="~/Content/layout.min.css" rel="stylesheet" />
+    <link href="~/Content/components.min.css" rel="stylesheet" />
+    <link href="~/Content/colors.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/knockout-3.5.0.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/app.js"></script>
+    <script src="~/Scripts/Utilities.js"></script>
+</head>
+<body>
+    <div class="navbar navbar-expand-md navbar-light" style="padding-bottom:0px;padding-top:0px; padding-right:0px">
+
+        <!-- Header with logos -->
+        <div class="navbar-header navbar-dark d-none d-md-flex align-items-md-center">
+            <div class="navbar-brand navbar-brand-md" style="margin-left: 1.25rem;">
+                <a href="/Home/Dashboard" class="d-inline-block">
+
+                </a>
+            </div>
+        </div>
+        <!-- /header with logos -->
+        <!-- Mobile controls -->
+        <div class="d-flex flex-1 d-md-none">
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile">
+                <i class="icon-tree5"></i>
+            </button>
+
+            <button class="navbar-toggler sidebar-mobile-main-toggle" type="button">
+                <i class="icon-paragraph-justify3"></i>
+            </button>
+        </div>
+        <!-- /mobile controls -->
+
+    </div>
+
+    <div class="page-content">
+        @{Html.RenderAction("Menu", "Admin", null);}
+        
+        <div class="content-wrapper" style="background-color: #F5F5F5">
+            <div class="page-header">
+                <div class="page-header-content header-elements-md-inline">
+                    <div class="page-title d-flex">
+
+                    </div>
+                </div>
+            </div>
+            <div class="content pt-0">
+                <div id="mainContentArea">
+                    @RenderBody()
+                </div>
+                <div id="mainContentLoading" class="card" style="display:none">
+                    <div class="card-body" style="text-align:center;padding-bottom: 250px;padding-top:250px">
+                        <img width="100" src="/Images/bigLoading.gif" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

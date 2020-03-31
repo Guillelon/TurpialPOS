@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8FE6DD08-E7CD-458A-8EE5-F440FA2E0F57}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DAL</RootNamespace>
+    <AssemblyName>DAL</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DTO\IntDecimalDual.cs" />
+    <Compile Include="DTO\RegisterDTO.cs" />
+    <Compile Include="Migrations\202001011916480_initMigration.cs" />
+    <Compile Include="Migrations\202001011916480_initMigration.Designer.cs">
+      <DependentUpon>202001011916480_initMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001011933539_AddingStoreIdToPayments.cs" />
+    <Compile Include="Migrations\202001011933539_AddingStoreIdToPayments.Designer.cs">
+      <DependentUpon>202001011933539_AddingStoreIdToPayments.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002281549533_AddingPaymentType.cs" />
+    <Compile Include="Migrations\202002281549533_AddingPaymentType.Designer.cs">
+      <DependentUpon>202002281549533_AddingPaymentType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002281918166_ChangingAmountToPriceInProduct.cs" />
+    <Compile Include="Migrations\202002281918166_ChangingAmountToPriceInProduct.Designer.cs">
+      <DependentUpon>202002281918166_ChangingAmountToPriceInProduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002282037042_RemovingStoreIdFromProduct.cs" />
+    <Compile Include="Migrations\202002282037042_RemovingStoreIdFromProduct.Designer.cs">
+      <DependentUpon>202002282037042_RemovingStoreIdFromProduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003021544199_AddingIsActiveToProduct.cs" />
+    <Compile Include="Migrations\202003021544199_AddingIsActiveToProduct.Designer.cs">
+      <DependentUpon>202003021544199_AddingIsActiveToProduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003021546459_AddingDeactivateDateToProduct.cs" />
+    <Compile Include="Migrations\202003021546459_AddingDeactivateDateToProduct.Designer.cs">
+      <DependentUpon>202003021546459_AddingDeactivateDateToProduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003311536521_AddingTaxToProduct.cs" />
+    <Compile Include="Migrations\202003311536521_AddingTaxToProduct.Designer.cs">
+      <DependentUpon>202003311536521_AddingTaxToProduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003311950469_AddingClient.cs" />
+    <Compile Include="Migrations\202003311950469_AddingClient.Designer.cs">
+      <DependentUpon>202003311950469_AddingClient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003311953424_AddingStoreToClient.cs" />
+    <Compile Include="Migrations\202003311953424_AddingStoreToClient.Designer.cs">
+      <DependentUpon>202003311953424_AddingStoreToClient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003311958517_AddingNotesToClient.cs" />
+    <Compile Include="Migrations\202003311958517_AddingNotesToClient.Designer.cs">
+      <DependentUpon>202003311958517_AddingNotesToClient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003312007084_AddingEmailToClient.cs" />
+    <Compile Include="Migrations\202003312007084_AddingEmailToClient.Designer.cs">
+      <DependentUpon>202003312007084_AddingEmailToClient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003312024291_AddingLegalIdToClient.cs" />
+    <Compile Include="Migrations\202003312024291_AddingLegalIdToClient.Designer.cs">
+      <DependentUpon>202003312024291_AddingLegalIdToClient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Client.cs" />
+    <Compile Include="Models\Invoice.cs" />
+    <Compile Include="Models\InvoiceDetail.cs" />
+    <Compile Include="Models\Payment.cs" />
+    <Compile Include="Models\PaymentDetail.cs" />
+    <Compile Include="Models\PaymentType.cs" />
+    <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\ProductType.cs" />
+    <Compile Include="Models\Register.cs" />
+    <Compile Include="Models\RegisterCashExit.cs" />
+    <Compile Include="Models\Store.cs" />
+    <Compile Include="Models\TurpialPOSDbContext.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\ClientRepository.cs" />
+    <Compile Include="Repositories\ProductRepository.cs" />
+    <Compile Include="Repositories\RegisterRepository.cs" />
+    <Compile Include="Resources\PaymentTypes.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202001011916480_initMigration.resx">
+      <DependentUpon>202001011916480_initMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001011933539_AddingStoreIdToPayments.resx">
+      <DependentUpon>202001011933539_AddingStoreIdToPayments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002281549533_AddingPaymentType.resx">
+      <DependentUpon>202002281549533_AddingPaymentType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002281918166_ChangingAmountToPriceInProduct.resx">
+      <DependentUpon>202002281918166_ChangingAmountToPriceInProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002282037042_RemovingStoreIdFromProduct.resx">
+      <DependentUpon>202002282037042_RemovingStoreIdFromProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003021544199_AddingIsActiveToProduct.resx">
+      <DependentUpon>202003021544199_AddingIsActiveToProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003021546459_AddingDeactivateDateToProduct.resx">
+      <DependentUpon>202003021546459_AddingDeactivateDateToProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003311536521_AddingTaxToProduct.resx">
+      <DependentUpon>202003311536521_AddingTaxToProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003311950469_AddingClient.resx">
+      <DependentUpon>202003311950469_AddingClient.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003311953424_AddingStoreToClient.resx">
+      <DependentUpon>202003311953424_AddingStoreToClient.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003311958517_AddingNotesToClient.resx">
+      <DependentUpon>202003311958517_AddingNotesToClient.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003312007084_AddingEmailToClient.resx">
+      <DependentUpon>202003312007084_AddingEmailToClient.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003312024291_AddingLegalIdToClient.resx">
+      <DependentUpon>202003312024291_AddingLegalIdToClient.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

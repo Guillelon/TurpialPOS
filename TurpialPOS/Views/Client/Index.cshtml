@@ -1,0 +1,320 @@
+﻿@{
+    Layout = null;
+}
+
+<div id="clientDashboard">
+    <div class="card">
+        <div class="card-body">
+            <div class="alert alert-success" role="alert" data-bind="visible: ShowSucessMessage">
+                <text data-bind="text: SucessMessage"></text>
+            </div>
+            <button data-bind="click: ShowAddClient" class="btn btn-info btn-lg">Agregar Cliente</button>
+            <table class="table table-bordered" style="margin-top:25px">
+                <thead>
+                    <tr>
+                        <th>
+                            Nombre
+                        </th>
+                        <th>
+                            RUC
+                        </th>
+                        <th>
+                            Dirección
+                        </th>
+                        <th>
+                            Nombre de Contacto
+                        </th>
+                        <th>
+                            Teléfono de Contacto
+                        </th>
+                        <th>
+                            Email de contacto
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: Clients">
+                    <tr>
+                        <td data-bind="text: $data.Name">
+                        </td>
+                        <td data-bind="text: $data.LegalId">
+                        </td>
+                        <td data-bind="text: $data.Address">
+                        </td>
+                        <td data-bind="text: $data.ContactName">
+                        </td>
+                        <td data-bind="text: $data.ContactPhone">
+                        </td>
+                        <td data-bind="text: $data.ContactEmail">
+                        </td>
+                        <td style="text-align:center">
+                            <button data-bind="click: $parent.ShowEditClient, attr: { id: $data.Id }" class="btn btn-info btn-sm">Editar</button>
+                            &nbsp;&nbsp;
+                            <button class="btn btn-danger btn-sm" data-bind="click: $parent.ShowDeleteClient, attr: { id: $data.Id }">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="addClientModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Agregar/Editar Cliente
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body">
+                            <div data-bind="visible: ShowNewError" class="alert alert-danger" role="alert">
+                                Los campos con asteriscos son mandatorios.
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Nombre: <text style="color: red">*</text> </label>
+                                    <input class="form-control" data-bind="value: NewName" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label>RUC: <text style="color: red">*</text></label>
+                                    <input class="form-control" data-bind="value: NewLegalId" />
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 20px">
+                                <div class="col-md-6">
+                                    <label>Nombre Contacto: <text style="color: red">*</text></label>
+                                    <input class="form-control" data-bind="value: NewContactName" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Teléfono Contacto: <text style="color: red">*</text></label>
+                                    <input class="form-control" data-bind="value: NewContactPhone" />
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 20px">
+                                <div class="col-md-6">
+                                    <label>Email Contacto: <text style="color: red">*</text></label>
+                                    <input data-bind="value: NewContactEmail" class="form-control" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Dirección: <text style="color: red">*</text></label>
+                                    <input class="form-control" data-bind="value: NewAddress" />
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 20px">
+                                <div class="col-md-12">
+                                    <label>Notas:</label>
+                                    <textarea data-bind="value: NewNotes" rows="2" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div style="text-align:center">
+                        <button data-bind="click: AddClient" class="btn btn-info">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="deleteClientModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Eliminar Cliente
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Nombre: <text style="color: red">*</text> </label>
+                                    <input class="form-control" data-bind="value: NewName" disabled />
+                                </div>
+                                <div class="col-md-6">
+                                    <label>RUC: <text style="color: red">*</text></label>
+                                    <input class="form-control" data-bind="value: NewLegalId" disabled />
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 20px">
+                                <div class="col-md-6">
+                                    <label>Nombre Contacto: <text style="color: red">*</text></label>
+                                    <input class="form-control" data-bind="value: NewContactName" disabled />
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Teléfono Contacto: <text style="color: red">*</text></label>
+                                    <input class="form-control" data-bind="value: NewContactPhone" disabled />
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 20px">
+                                <div class="col-md-6">
+                                    <label>Email Contacto: <text style="color: red">*</text></label>
+                                    <input data-bind="value: NewContactEmail" class="form-control" disabled />
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Dirección: <text style="color: red">*</text></label>
+                                    <input class="form-control" data-bind="value: NewAddress" disabled />
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 20px">
+                                <div class="col-md-12">
+                                    <label>Notas:</label>
+                                    <textarea data-bind="value: NewNotes" rows="2" class="form-control" disabled></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div style="text-align:center">
+                        <button data-bind="click: DeleteClient" class="btn btn-danger">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        function ClientDashboard() {
+            var self = this;
+            self.Clients = ko.observableArray();
+
+            //Messages
+            self.ShowNewError = ko.observable(false);
+            self.ShowSucessMessage = ko.observable(false);
+            self.SucessMessage = ko.observable();
+
+            self.ShowSuccessMessageAction = function (message) {
+                self.ShowSucessMessage(true);
+                self.SucessMessage(message);
+            }
+
+            //New
+            self.NewId = 0;
+            self.NewName = ko.observable();
+            self.NewLegalId = ko.observable();
+            self.NewAddress = ko.observable();
+            self.NewContactName = ko.observable();
+            self.NewContactPhone = ko.observable();
+            self.NewContactEmail = ko.observable();
+            self.NewNotes = ko.observable();
+
+            self.ShowAddClient = function () {
+                self.NewId = 0;
+                self.NewName('');
+                self.NewLegalId('');
+                self.NewAddress('');
+                self.NewContactName('');
+                self.NewContactPhone('');
+                self.NewContactEmail('');
+                $('#addClientModal').modal('show');
+            }
+
+            self.ShowEditClient = function (data, event) {
+                var id = event.target.id;
+                self.GetClient(id);
+                $('#addClientModal').modal('show');
+            }
+
+            self.AddClient = function () {
+                if (self.NewName() != null && self.NewName().length > 0
+                    && self.NewLegalId() != null && self.NewLegalId().length > 0
+                    && self.NewAddress() != null && self.NewAddress().length > 0
+                    && self.NewContactName() != null && self.NewContactName().length > 0
+                    && self.NewContactPhone() != null && self.NewContactPhone().length > 0
+                    && self.NewContactEmail() != null && self.NewContactEmail().length > 0) {
+                    self.ShowNewError(false);
+                    var data = {
+                        Name: self.NewName(), LegalId: self.NewLegalId(), Address: self.NewAddress(),
+                        ContactName: self.NewContactName(), ContactPhone: self.NewContactPhone(),
+                        ContactEmail: self.NewContactEmail(), Notes: self.NewNotes(), Id: self.NewId
+                    };
+                    $.ajax({
+                        url: '/Client/AddClient/',
+                        type: 'POST',
+                        contentType: "application/json",
+                        data: JSON.stringify({ model: data }),
+                        success: function () {
+                            self.GetData();
+                            self.ShowSuccessMessageAction("El cliente fue guardado con éxito.");
+                            $('#addClientModal').modal('hide');
+                        }
+                    });
+                }
+                else {
+                    self.ShowNewError(true);
+                }
+            }
+
+            self.ShowDeleteClient = function (data, event) {
+                var id = event.target.id;
+                self.GetClient(id);
+                $('#deleteClientModal').modal('show');
+            }
+
+            self.GetClient = function (id) {
+                self.NewId = id;
+                $.ajax({
+                    url: '/Client/GetClient/' + id,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        self.NewName(data.Name);
+                        self.NewLegalId(data.LegalId);
+                        self.NewAddress(data.Address);
+                        self.NewContactName(data.ContactName);
+                        self.NewContactPhone(data.ContactPhone);
+                        self.NewContactEmail(data.ContactEmail);
+                        self.NewNotes(data.Notes);
+                    }
+                });
+            }
+
+            self.GetData = function () {
+                $('#mainContentArea').hide();
+                $('#mainContentLoading').show();
+                $.ajax({
+                    url: '/Client/GetClients',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        self.Clients(data);
+                        $('#mainContentArea').show();
+                        $('#mainContentLoading').hide();
+                    }
+                });
+            }
+
+            self.DeleteClient = function () {
+                var data = {
+                    Id: self.NewId
+                };
+                $.ajax({
+                    url: '/Client/DeleteClient/',
+                    type: 'POST',
+                    contentType: "application/json",
+                    data: JSON.stringify({ model: data }),
+                    success: function () {
+                        self.GetData();
+                        self.ShowSuccessMessageAction('El cliente fue eliminado con éxito.');
+                        $('#deleteClientModal').modal('hide');
+                    }
+                });
+            }
+        }
+
+        var clientDashboard = new ClientDashboard();
+        var clientDashboardNode = document.getElementById('clientDashboard');
+        ko.applyBindings(clientDashboard, clientDashboardNode);
+        clientDashboard.GetData();
+    })
+</script>
