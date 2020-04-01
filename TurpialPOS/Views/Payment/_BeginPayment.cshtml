@@ -155,24 +155,24 @@
             self.CheckCssClass = ko.observable('payment-types-un-selected');
             self.CreditCardCssClass = ko.observable('payment-types-un-selected');
             self.DebitCardCssClass = ko.observable('payment-types-un-selected');
-            self.SelectedPaymentType = @TurpialPOS.Resource.PaymentTypes.Cash;
+            self.SelectedPaymentType = '@TurpialPOS.Resource.PaymentTypes.Cash';
 
             self.SelectPaymentType = function (paymentType) {
                 self.SetAllPaymentTypesAsFalse();
                 if (paymentType == 1) {
-                    self.SelectedPaymentType = @TurpialPOS.Resource.PaymentTypes.Cash;
+                    self.SelectedPaymentType = '@TurpialPOS.Resource.PaymentTypes.Cash';
                     self.CashCssClass('payment-types-selected');
                 }
                 else if (paymentType == 2) {
-                    self.SelectedPaymentType = @TurpialPOS.Resource.PaymentTypes.Check;
+                    self.SelectedPaymentType = '@TurpialPOS.Resource.PaymentTypes.Check';
                     self.CheckCssClass('payment-types-selected');
                 }
                 else if (paymentType == 3) {
-                    self.SelectedPaymentType = @TurpialPOS.Resource.PaymentTypes.Credit;
+                    self.SelectedPaymentType = '@TurpialPOS.Resource.PaymentTypes.Credit';
                     self.CreditCardCssClass('payment-types-selected');
                 }
                 else if (paymentType == 4) {
-                    self.SelectedPaymentType = @TurpialPOS.Resource.PaymentTypes.Debit;
+                    self.SelectedPaymentType = '@TurpialPOS.Resource.PaymentTypes.Debit';
                     self.DebitCardCssClass('payment-types-selected');
                 }
             }
