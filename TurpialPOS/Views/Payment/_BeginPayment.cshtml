@@ -27,104 +27,114 @@
             <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div class="modal-body" style="height:700px">
-            <div class="row">
-                <div class="col-md-8 col-lg-8 col-xs-6">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th width="45%">
-                                    Producto
-                                </th>
-                                <th style="text-align:center" width="15%">
-                                    Precio
-                                </th>
-                                <th style="text-align:center" width="15%">
-                                    Cantidad
-                                </th>
-                                <th style="text-align:center" width="15%">
-                                    Total
-                                </th>
-                                <th width="10%"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <select class="form-control" data-bind="options: AvailableProducts,
+            <div class="row" style="height:100%">
+                <div class="col-md-8 col-lg-8 col-xs-6" style="height:100%">
+                    <div class="card" style="height:100%">
+                        <div class="card-body" style="height:100%;overflow: auto">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th width="45%">
+                                            Producto
+                                        </th>
+                                        <th style="text-align:center" width="15%">
+                                            Precio
+                                        </th>
+                                        <th style="text-align:center" width="15%">
+                                            Cantidad
+                                        </th>
+                                        <th style="text-align:center" width="15%">
+                                            Total
+                                        </th>
+                                        <th width="10%"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <select class="form-control" data-bind="options: AvailableProducts,
                                                                     optionsText: function(item) {
                                                                         return item.Name + ' ($' + item.Price + ')'
                                                                     },
                                                                     optionsValue: 'Id',
                                                                     value: SelectedProduct,
                                                                     optionsCaption: 'Seleccionar Producto'"></select>
-                                </td>
-                                <td>
-                                    <input data-bind="value: SelectedProductPrice().formatMoney(2)" class="form-control" disabled />
-                                </td>
-                                <td>
-                                    <input type="number" data-bind="value: SelectedProductQuantity, enable:ProductSelected" class="form-control" />
-                                </td>
-                                <td style="text-align:center">
-                                    <strong>
-                                        <text data-bind="text: SelectedProductTotal().formatMoney(2)"></text>
-                                    </strong>
-                                </td>
-                                <td>
-                                    <div style="text-align:center" data-bind="visible: ProductSelected">
-                                        <i data-bind="click: AddDetail" style="cursor: pointer" class="fa fa-check fa-lg"></i>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tbody data-bind="foreach: Details">
-                            <tr>
-                                <td data-bind="text: Description">
-                                </td>
-                                <td style="text-align:center" data-bind="text: Price.formatMoney(2)">
-                                </td>
-                                <td style="text-align:center" data-bind="text: Quantity">
-                                </td>
-                                <td style="text-align:center; font-weight:bold" data-bind="text: Total().formatMoney(2)">
-                                </td>
-                                <td>
-                                    <div style="text-align:center">
-                                        <i data-bind="click: $root.RemoveDetail" style="cursor: pointer" class="fa fa-remove fa-lg"></i>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tfoot data-bind="visible: Details().length > 0">
-                            <tr>
-                                <td colspan="3">
-                                </td>
-                                <td colspan="2" style="text-align:center">
-                                    <strong data-bind="text: Total().formatMoney(2)"></strong>
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
+                                        </td>
+                                        <td>
+                                            <input data-bind="value: SelectedProductPrice().formatMoney(2)" class="form-control" disabled />
+                                        </td>
+                                        <td>
+                                            <input type="number" data-bind="value: SelectedProductQuantity, enable:ProductSelected" class="form-control" />
+                                        </td>
+                                        <td style="text-align:center">
+                                            <strong>
+                                                <text data-bind="text: SelectedProductTotal().formatMoney(2)"></text>
+                                            </strong>
+                                        </td>
+                                        <td>
+                                            <div style="text-align:center" data-bind="visible: ProductSelected">
+                                                <i data-bind="click: AddDetail" style="cursor: pointer" class="fa fa-check fa-lg"></i>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tbody data-bind="foreach: Details">
+                                    <tr>
+                                        <td data-bind="text: Description">
+                                        </td>
+                                        <td style="text-align:center" data-bind="text: Price.formatMoney(2)">
+                                        </td>
+                                        <td style="text-align:center" data-bind="text: Quantity">
+                                        </td>
+                                        <td style="text-align:center; font-weight:bold" data-bind="text: Total().formatMoney(2)">
+                                        </td>
+                                        <td>
+                                            <div style="text-align:center">
+                                                <i data-bind="click: $root.RemoveDetail" style="cursor: pointer" class="fa fa-remove fa-lg"></i>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot data-bind="visible: Details().length > 0">
+                                    <tr>
+                                        <td colspan="3">
+                                        </td>
+                                        <td colspan="2" style="text-align:center">
+                                            <strong data-bind="text: Total().formatMoney(2)"></strong>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-4 col-lg-4 col-xs-6" style="height:inherit">
-                    <div class="card">
-                        <div class="card-body">
+                <div class="col-md-4 col-lg-4 col-xs-6" style="height:100%">
+                    <div class="card" style="height:100%">
+                        <div class="card-body" style="height:100%">
                             <div style="text-align:center">
                                 <h1>Total a pagar</h1>
                                 <h1 data-bind="text: Total().formatMoney(2)"></h1>
                             </div>
                             <hr />
-                            <div class="row">
-                                <div data-bind="click: SelectPaymentType.bind(this,1),css: CashCssClass" class="col-md-6 payment-types">
+                            <div class="row" style="padding-left:30px; padding-right:30px">
+                                <div data-bind="click: SelectPaymentType.bind(this,1),css: CashCssClass" class="col-md-6 col-sm-12 col-xs-12 payment-types">
                                     <img width="85" src="~/Images/cashLogo.png" />
                                 </div>
-                                <div data-bind="click: SelectPaymentType.bind(this,2),css: CheckCssClass" class="col-md-6 payment-types">
+                                <div data-bind="click: SelectPaymentType.bind(this,2),css: CheckCssClass" class="col-md-6 col-sm-12 col-xs-12 payment-types">
                                     <img width="85" src="~/Images/checkLogo.png" />
                                 </div>
-                                <div data-bind="click: SelectPaymentType.bind(this,3),css: CreditCardCssClass" class="col-md-6 payment-types">
-                                    <img width="85" height="55"  src="~/Images/creditCardLogo.png" />
+                                <div data-bind="click: SelectPaymentType.bind(this,3),css: CreditCardCssClass" class="col-md-6 col-sm-12 col-xs-12 payment-types">
+                                    <img width="85" height="55" src="~/Images/creditCardLogo.png" />
                                 </div>
-                                <div data-bind="click: SelectPaymentType.bind(this,4),css: DebitCardCssClass" class="col-md-6 payment-types">
-                                    <img width="85"  height="55"  src="~/Images/debitCardLogo.png" />
+                                <div data-bind="click: SelectPaymentType.bind(this,4),css: DebitCardCssClass" class="col-md-6 col-sm-12 col-xs-12 payment-types">
+                                    <img width="85" height="55" src="~/Images/debitCardLogo.png" />
                                 </div>
+                            </div>
+                            <hr />
+                            <div style="padding-top:25px">
+                                <button class="btn btn-lg btn-primary btn-block">
+                                    <text style="font-size: 20px">Procesar Pago $</text>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -243,6 +253,10 @@
                 });
                 return total;
             })
+
+            self.SendPayment = function () {
+
+            }
         }
 
         function Detail(data) {
