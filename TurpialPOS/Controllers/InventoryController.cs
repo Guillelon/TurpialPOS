@@ -113,7 +113,6 @@ namespace TurpialPOS.Controllers
         public ActionResult ProductPrint()
         {
             var data = (PrintProductDTO)TempData["ProductsToPrint"];
-            TempData["ProductsToPrint"] = null;
             string cusomtSwitches = string.Format("--print-media-type --allow {0} --footer-html {0}", Url.Action("ProductPrintFooter", "Inventory", new { area = "" }, "https"));
             return new Rotativa.ViewAsPdf("ProductPrint", data)
             {
