@@ -23,21 +23,30 @@ namespace DAL.Repositories
             _context.SaveChanges();
             return product;
         }
-
+                
         public Product Edit(Product productEdited)
         {
             var product = _context.Product.Where(p => p.Id == productEdited.Id).FirstOrDefault();
             if(product != null){
                 product.Name = productEdited.Name;
-                product.Cost = productEdited.Cost;
-                product.Price = productEdited.Price;
-                product.CodeBar = productEdited.CodeBar;
+                product.Code = productEdited.Code;
+                product.OrderNumber = productEdited.OrderNumber;
+                product.CatalogNumber = productEdited.CatalogNumber;
+                product.SanitaryCode = productEdited.SanitaryCode;
+                product.Brand = productEdited.Brand;
+                product.Factory = productEdited.Factory;
+                product.Country = productEdited.Country;
                 product.Description = productEdited.Description;
-                product.ProductTypeId = productEdited.ProductTypeId;
+                product.Stock = productEdited.Stock;
                 _context.Entry(product).State = System.Data.Entity.EntityState.Modified;
                 _context.SaveChanges();                
             }
             return product;
+        }
+
+        public List<Product> GetByIdList(IList<int> ids)
+        {
+            return _context.Product.Where(p => ids.Contains(p.Id)).ToList();
         }
 
         public void Delete(int id)
@@ -53,7 +62,7 @@ namespace DAL.Repositories
 
         public IList<Product> GetAll(int storeId)
         {
-            return _context.Product.Where(p => p.ProductType.StoreId == storeId
+            return _context.Product.Where(p => p.StoreId == storeId
                                             && p.IsActive).ToList();
         }
 
@@ -65,6 +74,11 @@ namespace DAL.Repositories
         public Product Get(int id)
         {
             return _context.Product.Where(p => p.Id == id).FirstOrDefault();
+        }
+
+        public Product GetByCode(string code)
+        {
+            return _context.Product.Where(p => p.Code == code).FirstOrDefault();
         }
     }
 }

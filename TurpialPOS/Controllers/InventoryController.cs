@@ -1,8 +1,16 @@
-﻿using DAL.Models;
+﻿using DAL.DTO;
+using DAL.Models;
 using DAL.Repositories;
+using Rotativa.Options;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Net;
+using System.Threading;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using System.Web.UI.WebControls;
 
 namespace TurpialPOS.Controllers
 {
@@ -26,8 +34,8 @@ namespace TurpialPOS.Controllers
         {
             var products = _productRepository.GetAll(storeId).Select(p => new
             {
-                p.Name,p.Price,p.Cost,p.Description,p.CodeBar,
-                ProductType = p.ProductType.Name, p.Id, p.Tax
+                p.Id, p.Name, p.Code, p.OrderNumber, p.CatalogNumber, p.SanitaryCode,
+                p.Brand, p.Factory, p.Country, p.Description, p.Stock, Checked = false
             });
             return new JavaScriptSerializer().Serialize(products);
         }
@@ -38,16 +46,19 @@ namespace TurpialPOS.Controllers
             var product = _productRepository.Get(id);
             var viewModel = new {
                 product.Name,
-                product.Price,
-                product.Cost,
-                product.Description,
-                product.CodeBar,
-                ProductType = product.ProductType.Id,
-                product.Id
+                product.Code,
+                product.OrderNumber,
+                product.CatalogNumber,
+                product.SanitaryCode,
+                product.Brand,
+                product.Factory,
+                product.Country,
+                product.Description, 
+                product.Stock
             };
             return new JavaScriptSerializer().Serialize(viewModel);
         }
-
+        
         [HttpGet]
         public string GetProductTypes()
         {
@@ -56,13 +67,28 @@ namespace TurpialPOS.Controllers
         }
 
         [HttpPost]
-        public string AddProduct(Product model)
+        public ActionResult AddProduct(Product data)
         {
-            if (model.Id > 0)
-                _productRepository.Edit(model);
+            data.StoreId = storeId;
+            //Check if code Exists
+            var possiblePreviousProduct = _productRepository.GetByCode(data.Code);
+            if (data.Id > 0)
+            {
+                if(possiblePreviousProduct != null && possiblePreviousProduct.Id != data.Id)
+                    return Json(new { success = false, responseText = "Ya existe en el inventario un producto con el código " + data.Code + "." }, JsonRequestBehavior.AllowGet);
+                else
+                    _productRepository.Edit(data);
+            }
             else
-                _productRepository.Add(model);
-            return "200";
+            {
+                if (possiblePreviousProduct == null)
+                    _productRepository.Add(data);
+                else
+                {
+                    return Json(new { success = false, responseText = "Ya existe en el inventario un producto con el código " + data.Code + "." }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            return Json(new { success = true, responseText = "El producto se agregó con éxito en el inventario." }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -70,6 +96,36 @@ namespace TurpialPOS.Controllers
         {
             _productRepository.Delete(model.Id);
             return "200";
+        }
+
+        [HttpPost]
+        public ActionResult SetProductPrint(PrintProductDTO data)
+        {
+            var now = DateTime.Now;
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("es-ES");
+            data.Date = now.ToLongDateString();
+            data.Products = _productRepository.GetByIdList(data.Ids);
+            TempData["ProductsToPrint"] = data;
+            return null;
+        }
+
+        [HttpGet]
+        public ActionResult ProductPrint()
+        {
+            var data = (PrintProductDTO)TempData["ProductsToPrint"];
+            TempData["ProductsToPrint"] = null;
+            string cusomtSwitches = string.Format("--print-media-type --allow {0} --footer-html {0}", Url.Action("ProductPrintFooter", "Inventory", new { area = "" }, "https"));
+            return new Rotativa.ViewAsPdf("ProductPrint", data)
+            {
+                FileName = "PDF_Output.pdf",
+                CustomSwitches = cusomtSwitches
+            }; 
+        }
+
+        [AllowAnonymous]
+        public ActionResult ProductPrintFooter()
+        {
+            return View();  
         }
     }
 }

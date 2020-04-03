@@ -19,8 +19,18 @@ namespace DAL.Models
         public bool IsActive { get; set; }
         public DateTime? DeactivationDate { get; set; }
 
-        public virtual ProductType ProductType { get; set; }
-        public int ProductTypeId { get; set; }
+        //iFarmaLabs needs
+        public string Code { get; set; }
+        public string OrderNumber { get; set; }
+        public string CatalogNumber { get; set; }
+        public string SanitaryCode { get; set; }
+        public string Brand { get; set; }
+        public string Factory { get; set; }
+        public string Country { get; set; }
+        public int Stock { get; set; }
+
+        public int StoreId { get; set; }
+        public virtual Store Store { get; set; }
 
         public Product()
         {

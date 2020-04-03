@@ -49,6 +49,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTO\IntDecimalDual.cs" />
+    <Compile Include="DTO\PrintProductDTO.cs" />
+    <Compile Include="DTO\Products.cs" />
     <Compile Include="DTO\RegisterDTO.cs" />
     <Compile Include="Migrations\202001011916480_initMigration.cs" />
     <Compile Include="Migrations\202001011916480_initMigration.Designer.cs">
@@ -101,6 +103,18 @@
     <Compile Include="Migrations\202003312024291_AddingLegalIdToClient.cs" />
     <Compile Include="Migrations\202003312024291_AddingLegalIdToClient.Designer.cs">
       <DependentUpon>202003312024291_AddingLegalIdToClient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004021538402_AddingIFarmaLabsReqsToProduct.cs" />
+    <Compile Include="Migrations\202004021538402_AddingIFarmaLabsReqsToProduct.Designer.cs">
+      <DependentUpon>202004021538402_AddingIFarmaLabsReqsToProduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004021555531_RemovingProductTypeFromProduct.cs" />
+    <Compile Include="Migrations\202004021555531_RemovingProductTypeFromProduct.Designer.cs">
+      <DependentUpon>202004021555531_RemovingProductTypeFromProduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004032008187_AddingStockToProduct.cs" />
+    <Compile Include="Migrations\202004032008187_AddingStockToProduct.Designer.cs">
+      <DependentUpon>202004032008187_AddingStockToProduct.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Client.cs" />
@@ -164,6 +178,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003312024291_AddingLegalIdToClient.resx">
       <DependentUpon>202003312024291_AddingLegalIdToClient.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004021538402_AddingIFarmaLabsReqsToProduct.resx">
+      <DependentUpon>202004021538402_AddingIFarmaLabsReqsToProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004021555531_RemovingProductTypeFromProduct.resx">
+      <DependentUpon>202004021555531_RemovingProductTypeFromProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004032008187_AddingStockToProduct.resx">
+      <DependentUpon>202004032008187_AddingStockToProduct.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
