@@ -113,7 +113,8 @@ namespace TurpialPOS.Controllers
         public ActionResult ProductPrint()
         {
             var data = (PrintProductDTO)TempData["ProductsToPrint"];
-            string cusomtSwitches = string.Format("--print-media-type --allow {0} --footer-html {0}", Url.Action("ProductPrintFooter", "Inventory", new { area = "" }, "https"));
+            TempData["ProductsToPrint"] = null;
+            string cusomtSwitches = string.Format("--print-media-type --allow {0} --footer-html {0} --header-html {1}", Url.Action("ProductPrintFooter", "Inventory", new { area = "" }, "https"), Url.Action("ProductPrintHeader", "Inventory", new { area = "" }, "https"));
             return new Rotativa.ViewAsPdf("ProductPrint", data)
             {
                 FileName = "PDF_Output.pdf",
@@ -126,5 +127,11 @@ namespace TurpialPOS.Controllers
         {
             return View();  
         }
+
+        [AllowAnonymous]
+        public ActionResult ProductPrintHeader()
+        {
+            return View();
+        }        
     }
 }

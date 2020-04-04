@@ -307,6 +307,7 @@
     <Content Include="Views\Client\Index.cshtml" />
     <Content Include="Views\Inventory\ProductPrint.cshtml" />
     <Content Include="Views\Inventory\ProductPrintFooter.cshtml" />
+    <Content Include="Views\Inventory\ProductPrintHeader.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
