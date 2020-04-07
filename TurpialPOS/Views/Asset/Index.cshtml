@@ -79,7 +79,8 @@
                 </div>
                 <div class="modal-footer">
                     <div style="text-align:center">
-                        <button data-bind="click: Add" class="btn btn-info">Guardar</button>
+                        <img width="25" src="~/Images/bigLoading.gif" data-bind="visible: Loading()" />
+                        <button data-bind="click: Add, enable: !Loading()" class="btn btn-info">Guardar</button>
                     </div>
                 </div>
             </div>
@@ -148,7 +149,7 @@
                 self.ShowSucessMessage(true);
                 self.SucessMessage(message);
             }
-
+            self.Loading = ko.observable(false); 
             //New
             self.NewId = 0;
             self.NewDescription = ko.observable();
@@ -171,6 +172,7 @@
 
             self.Add = function () {
                 self.ShowNewError(false);
+                self.Loading(true);
                 var data = {
                     Description: self.NewDescription(), Office: self.NewOffice(), Area: self.NewArea(), Id: self.NewId
                 };
@@ -180,6 +182,7 @@
                     contentType: "application/json",
                     data: JSON.stringify({ model: data }),
                     success: function (response) {
+                        self.Loading(false);
                         if (response.success) {
                             self.ShowNewError(false);
                             self.GetData();

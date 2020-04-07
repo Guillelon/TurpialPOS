@@ -165,7 +165,8 @@
                 </div>
                 <div class="modal-footer">
                     <div style="text-align:center">
-                        <button data-bind="click: AddProduct" class="btn btn-info">Guardar</button>
+                        <img width="25" src="~/Images/bigLoading.gif" data-bind="visible: Loading()" />
+                        <button data-bind="click: AddProduct, enable: !Loading()" class="btn btn-info">Guardar</button>
                     </div>
                 </div>
             </div>
@@ -516,7 +517,7 @@
             }
 
             self.SelectedToPrint = ko.observable(0);
-
+            self.Loading = ko.observable(false);
             self.CheckedClick = function () {
                 if (self.Products().length > 0) {
                     var total = 0;
@@ -660,6 +661,7 @@
             }
 
             self.AddProduct = function () {
+                self.Loading(true);
                 var data = {
                     Name: self.NewName(), Code: self.NewCode(), OrderNumber: self.NewOrderNumber(),
                     CatalogNumber: self.NewCatalogNumber(), SanitaryCode: self.NewSanitaryCode(),
@@ -672,6 +674,7 @@
                     contentType: "application/json",
                     data: JSON.stringify({ model: data }),
                     success: function (response) {
+                        self.Loading(false);
                         if (response.success) {
                             self.ShowNewError(false);
                             self.GetProducts();
