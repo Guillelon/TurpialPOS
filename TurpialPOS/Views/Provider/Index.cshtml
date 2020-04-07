@@ -1,92 +1,57 @@
-﻿@model IList<DAL.Models.Product>
+﻿
 @{
     Layout = null;
 }
 
-<div id="inventoryDashboard">
+<div id="providerDashboard">
     <div class="card">
         <div class="card-body">
             <div class="alert alert-success" role="alert" data-bind="visible: ShowSucessMessage">
                 <text data-bind="text: SucessMessage"></text>
             </div>
-            <div>
-                <button data-bind="click: ShowAddProduct" class="btn btn-info btn-lg">Agregar Producto</button>
-                &nbsp;&nbsp;
-                <button data-bind="click: PrintProduct" class="btn btn-info btn-lg">Imprimir (<text data-bind="text: SelectedToPrint"></text>)</button>
-            </div>
+            <button data-bind="click: ShowAdd" class="btn btn-info btn-lg">Agregar Proveedor</button>
             <table class="table table-bordered" style="margin-top:25px">
                 <thead>
                     <tr>
-                        <th style="text-align:center">
-                            <div class="checkbox">
-                                <label style="padding-left:0px">
-                                    <input type="checkbox" data-bind="checked: $data.AllChecked, click: AllCheckedAction" />
-                                    <span class="cr"><i class="cr-icon fa fa-check"></i></span>
-                                </label>
-                            </div>
-                        </th>
-                        <th>
-                            Código
-                        </th>
                         <th>
                             Nombre
                         </th>
                         <th>
-                            # de pedido
+                            RUC
                         </th>
                         <th>
-                            # de catalogo
+                            País
                         </th>
                         <th>
-                            Código sanitario
+                            Nombre de Contacto
                         </th>
                         <th>
-                            Marca
+                            Teléfono de Contacto
                         </th>
                         <th>
-                            Proveedor
+                            Email de contacto
                         </th>
-                        <th>
-
-                        </th>
+                        <th width="15%"></th>
                     </tr>
                 </thead>
-                <tbody data-bind="foreach: Products">
+                <tbody data-bind="foreach: Elements">
                     <tr>
-                        <td style="text-align:center">
-                            <div class="checkbox">
-                                <label style="padding-left:0px">
-                                    <input type="checkbox" data-bind="checked: $data.Checked, click: $root.CheckedClick" />
-                                    <span class="cr"><i class="cr-icon fa fa-check"></i></span>
-                                </label>
-                            </div>
+                        <td data-bind="text: $data.Name">
                         </td>
-                        <td>
-                            <text data-bind="text: $data.Code"></text>
+                        <td data-bind="text: $data.LegalId">
                         </td>
-                        <td>
-                            <text data-bind="text: $data.Name"></text>
+                        <td data-bind="text: $data.Country">
                         </td>
-                        <td>
-                            <text data-bind="text: $data.OrderNumber"></text>
+                        <td data-bind="text: $data.ContactName">
                         </td>
-                        <td>
-                            <text data-bind="text: $data.CatalogNumber"></text>
+                        <td data-bind="text: $data.ContactPhone">
                         </td>
-                        <td>
-                            <text data-bind="text: $data.SanitaryCode"></text>
-                        </td>
-                        <td>
-                            <text data-bind="text: $data.Brand"></text>
-                        </td>
-                        <td>
-                            <text data-bind="text: $data.ProviderName"></text> ||
-                            <text data-bind="text: $data.ProviderCountry"></text>
+                        <td data-bind="text: $data.ContactEmail">
                         </td>
                         <td style="text-align:center">
-                            <button data-bind="click: $parent.ShowEditProduct, attr: { id: $data.Id }" class="btn btn-info btn-sm">Editar</button>
+                            <button data-bind="click: $parent.ShowEdit, attr: { id: $data.Id }" class="btn btn-info btn-sm">Editar</button>
                             &nbsp;&nbsp;
-                            <button class="btn btn-danger btn-sm" data-bind="click: $parent.ShowDeleteProduct, attr: { id: $data.Id }">Eliminar</button>
+                            <button class="btn btn-danger btn-sm" data-bind="click: $parent.ShowDelete, attr: { id: $data.Id }">Eliminar</button>
                         </td>
                     </tr>
                 </tbody>
@@ -94,11 +59,11 @@
         </div>
     </div>
 
-    <div id="addProductModal" class="modal" tabindex="-1" role="dialog">
+    <div id="addModal" class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    Agregar/Editar Producto
+                    Agregar/Editar Proveedor
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -111,125 +76,31 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label>Código:<text style="color: red">*</text></label>
-                                    <input class="form-control" data-bind="value: NewCode" />
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Nombre:<text style="color: red">*</text></label>
+                                    <label>Nombre: <text style="color: red">*</text> </label>
                                     <input class="form-control" data-bind="value: NewName" />
                                 </div>
-                            </div>
-                            <div class="row" style="margin-top: 20px">
                                 <div class="col-md-6">
-                                    <label># de Pedido:<text style="color: red">*</text></label>
-                                    <input class="form-control" data-bind="value: NewOrderNumber" />
-                                </div>
-                                <div class="col-md-6">
-                                    <label># de Catalogo:<text style="color: red">*</text></label>
-                                    <input class="form-control" data-bind="value: NewCatalogNumber" />
+                                    <label>RUC: <text style="color: red">*</text></label>
+                                    <input class="form-control" data-bind="value: NewLegalId" />
                                 </div>
                             </div>
                             <div class="row" style="margin-top: 20px">
                                 <div class="col-md-6">
-                                    <label>Código Sanitario:<text style="color: red">*</text></label>
-                                    <input class="form-control" data-bind="value: NewSanitaryCode" />
+                                    <label>Nombre Contacto: <text style="color: red">*</text></label>
+                                    <input class="form-control" data-bind="value: NewContactName" />
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Marca:<text style="color: red">*</text></label>
-                                    <input class="form-control" data-bind="value: NewBrand" />
+                                    <label>Teléfono Contacto: <text style="color: red">*</text></label>
+                                    <input class="form-control" data-bind="value: NewContactPhone" />
                                 </div>
                             </div>
                             <div class="row" style="margin-top: 20px">
                                 <div class="col-md-6">
-                                    <label>Proveedor:<text style="color: red">*</text></label>
-                                    <select class="form-control"
-                                            data-bind="options: Providers,
-                                                       optionsText: 'Name',
-                                                       optionsValue: 'Id',
-                                                       value: NewProviderId,
-                                                       optionsCaption: 'Select Provider'"></select>
+                                    <label>Email Contacto: <text style="color: red">*</text></label>
+                                    <input data-bind="value: NewContactEmail" class="form-control" />
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Stock:<text style="color: red">*</text></label>
-                                    <input type="number" class="form-control" data-bind="value: NewStock" />
-                                </div>
-                            </div>
-                            <div class="row" style="margin-top: 20px">
-                                <div class="col-md-12">
-                                    <label>Descripción:</label>
-                                    <textarea class="form-control" data-bind="value: NewDescription" rows="2"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div style="text-align:center">
-                        <button data-bind="click: AddProduct" class="btn btn-info">Guardar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="deleteProductModal" class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    Eliminar Producto
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="card">
-                        <div class="card-body">
-                            <div data-bind="visible: ShowNewError" class="alert alert-danger" role="alert">
-                                <text data-bind="text: NewError"></text>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Código:</label>
-                                    <input class="form-control" data-bind="value: NewCode" disabled />
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Nombre:</label>
-                                    <input class="form-control" data-bind="value: NewName" disabled />
-                                </div>
-                            </div>
-                            <div class="row" style="margin-top: 20px">
-                                <div class="col-md-6">
-                                    <label># de Pedido:</label>
-                                    <input class="form-control" data-bind="value: NewOrderNumber" disabled />
-                                </div>
-                                <div class="col-md-6">
-                                    <label># de Catalogo:</label>
-                                    <input class="form-control" data-bind="value: NewCatalogNumber" disabled />
-                                </div>
-                            </div>
-                            <div class="row" style="margin-top: 20px">
-                                <div class="col-md-6">
-                                    <label>Código Sanitario:</label>
-                                    <input class="form-control" data-bind="value: NewSanitaryCode" disabled />
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Marca:</label>
-                                    <input class="form-control" data-bind="value: NewBrand" disabled />
-                                </div>
-                            </div>
-                            <div class="row" style="margin-top: 20px">
-                                <div class="col-md-6">
-                                    <label>Fábrica:</label>
-                                    <input class="form-control" data-bind="value: NewProviderId" disabled />
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Stock:</label>
-                                    <input type="number" class="form-control" data-bind="value: NewStock" disabled />
-                                </div>
-                            </div>
-                            <div class="row" style="margin-top: 20px">
-                                <div class="col-md-12">
-                                    <label>País de origen:</label>
+                                    <label>País: <text style="color: red">*</text></label>
                                     <select class="form-control" data-bind="value: NewCountry">
                                         <option value="Afganistan">Afghanistan</option>
                                         <option value="Albania">Albania</option>
@@ -482,8 +353,8 @@
                             </div>
                             <div class="row" style="margin-top: 20px">
                                 <div class="col-md-12">
-                                    <label>Descripción:</label>
-                                    <textarea class="form-control" data-bind="value: NewDescription" rows="2" disabled></textarea>
+                                    <label>Notas:</label>
+                                    <textarea data-bind="value: NewNotes" rows="2" class="form-control"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -491,22 +362,88 @@
                 </div>
                 <div class="modal-footer">
                     <div style="text-align:center">
-                        <button data-bind="click: DeleteProduct" class="btn btn-danger">Eliminar</button>
+                        <button data-bind="click: Add" class="btn btn-info">Guardar</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <div id="deleteModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Eliminar Proveedor
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Nombre: <text style="color: red">*</text> </label>
+                                    <input class="form-control" data-bind="value: NewName" disabled />
+                                </div>
+                                <div class="col-md-6">
+                                    <label>RUC: <text style="color: red">*</text></label>
+                                    <input class="form-control" data-bind="value: NewLegalId" disabled />
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 20px">
+                                <div class="col-md-6">
+                                    <label>Nombre Contacto: <text style="color: red">*</text></label>
+                                    <input class="form-control" data-bind="value: NewContactName" disabled />
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Teléfono Contacto: <text style="color: red">*</text></label>
+                                    <input class="form-control" data-bind="value: NewContactPhone" disabled />
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 20px">
+                                <div class="col-md-6">
+                                    <label>Email Contacto: <text style="color: red">*</text></label>
+                                    <input data-bind="value: NewContactEmail" class="form-control" disabled />
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Dirección: <text style="color: red">*</text></label>
+                                    <input class="form-control" data-bind="value: NewCountry" disabled />
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 20px">
+                                <div class="col-md-12">
+                                    <label>Notas:</label>
+                                    <textarea data-bind="value: NewNotes" rows="2" class="form-control" disabled></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div style="text-align:center">
+                        <button data-bind="click: Delete" class="btn btn-danger">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
     $(document).ready(function () {
-        function InventoryDashboard() {
+        function ProviderDashboard() {
             var self = this;
-            self.Products = ko.observableArray();
-            self.Providers = ko.observableArray();
-            self.ProductTypes = ko.observableArray();
+            self.Elements = ko.observableArray();
+
+            //Messages
+            self.NewError = ko.observable('');
+            self.ShowNewError = ko.observable(false);
+            self.ShowNewErrorAction = function (error) {
+                self.NewError(error);
+                self.ShowNewError(true);
+            }
+
             self.ShowSucessMessage = ko.observable(false);
             self.SucessMessage = ko.observable();
 
@@ -515,197 +452,120 @@
                 self.SucessMessage(message);
             }
 
-            self.SelectedToPrint = ko.observable(0);
-
-            self.CheckedClick = function () {
-                if (self.Products().length > 0) {
-                    var total = 0;
-                    ko.utils.arrayForEach(self.Products(), function (product) {
-                        if (product.Checked)
-                            total++;
-                    });
-                    self.SelectedToPrint(total);
-                }
-                else self.SelectedToPrint(0);
-                return true;
-            };
-
-            self.AllChecked = ko.observable(false);
-
-            self.AllCheckedAction = function () {
-                ko.utils.arrayForEach(self.Products(), function (product) {
-                    product.Checked = self.AllChecked();
-                });
-                return true;
-            }
-
-            //New Product
-            self.NewProductId = 0;
+            //New
+            self.NewId = 0;
             self.NewName = ko.observable();
-            self.NewProductType = ko.observable();
-            self.NewPrice = ko.observable();
-            self.NewCost = ko.observable();
-            self.NewBarCode = ko.observable();
-            self.NewDescription = ko.observable();
-
-            //Errors
-            self.NewError = ko.observable('');
-            self.ShowNewError = ko.observable(false);
-            self.ShowNewErrorAction = function (error) {
-                self.NewError(error);
-                self.ShowNewError(true);
-            }
-
-            self.NewCode = ko.observable();
-            self.NewOrderNumber = ko.observable();
-            self.NewCatalogNumber = ko.observable();
-            self.NewSanitaryCode = ko.observable();
-            self.NewBrand = ko.observable();
-            self.NewProviderId = ko.observable();
+            self.NewLegalId = ko.observable();
             self.NewCountry = ko.observable();
-            self.NewStock = ko.observable();
+            self.NewContactName = ko.observable();
+            self.NewContactPhone = ko.observable();
+            self.NewContactEmail = ko.observable();
+            self.NewNotes = ko.observable();
 
-            self.GetProducts = function () {
-                $('#mainContentArea').hide();
-                $('#mainContentLoading').show();
-                $.ajax({
-                    url: '/Inventory/GetProducts',
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function (data) {
-                        self.Products(data);
-                        $('#mainContentArea').show();
-                        $('#mainContentLoading').hide();
-                    }
-                });
-            }
-
-            self.GetProduct = function (id) {
-                self.NewProductId = id;
-                $.ajax({
-                    url: '/Inventory/GetProduct/' + id,
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function (data) {
-                        self.NewName(data.Name);
-                        self.NewCode(data.Code);
-                        self.NewOrderNumber(data.OrderNumber);
-                        self.NewCatalogNumber(data.CatalogNumber);
-                        self.NewSanitaryCode(data.SanitaryCode);
-                        self.NewBrand(data.Brand);
-                        self.NewProviderId(data.ProviderId)
-                        self.NewDescription(data.Description);
-                        self.NewStock(data.Stock);
-                    }
-                });
-            }
-
-            self.GetProviders = function () {
-                $.ajax({
-                    url: '/Provider/GetData',
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function (data) {
-                        self.Providers(data);
-                    }
-                });
-            }
-
-            self.GetData = function () {
-                self.GetProducts();
-                self.GetProviders();
-            }
-
-            self.ShowAddProduct = function () {
-                self.NewProductId = 0;
+            self.ShowAdd = function () {
+                self.NewId = 0;
                 self.NewName('');
-                self.NewCode('');
-                self.NewCatalogNumber('');
-                self.NewSanitaryCode('');
-                self.NewBrand('');
-                self.NewProviderId('');
-                self.NewDescription('');
-                self.NewCountry(null);
-                self.NewStock(1);
-                $('#addProductModal').modal('show');
+                self.NewLegalId('');
+                self.NewCountry('');
+                self.NewContactName('');
+                self.NewContactPhone('');
+                self.NewContactEmail('');
+                $('#addModal').modal('show');
             }
 
-            self.ShowEditProduct = function (data, event) {
+            self.ShowEdit = function (data, event) {
                 var id = event.target.id;
-                self.GetProduct(id);
-                $('#addProductModal').modal('show');
+                self.Get(id);
+                $('#addModal').modal('show');
             }
 
-            self.PrintProduct = function () {
-                var ids = [];
-                ko.utils.arrayForEach(self.Products(), function (product) {
-                    if (product.Checked)
-                        ids.push(product.Id);
-                });
-
-                $.ajax({
-                    url: '/Inventory/SetProductPrint/',
-                    type: 'POST',
-                    data: { Ids: ids },
-                    success: function () {
-                        window.location.href = "/Inventory/ProductPrint/";
-                    }
-                });
-            }
-
-            self.ShowDeleteProduct = function (data, event) {
-                var id = event.target.id;
-                self.GetProduct(id);
-                $('#deleteProductModal').modal('show');
-            }
-
-            self.AddProduct = function () {
+            self.Add = function () {
+                self.ShowNewError(false);
                 var data = {
-                    Name: self.NewName(), Code: self.NewCode(), OrderNumber: self.NewOrderNumber(),
-                    CatalogNumber: self.NewCatalogNumber(), SanitaryCode: self.NewSanitaryCode(),
-                    Brand: self.NewBrand(), ProviderId: self.NewProviderId(),
-                    Id: self.NewProductId, Description: self.NewDescription(), Stock: self.NewStock()
+                    Name: self.NewName(), LegalId: self.NewLegalId(), Country: self.NewCountry(),
+                    ContactName: self.NewContactName(), ContactPhone: self.NewContactPhone(),
+                    ContactEmail: self.NewContactEmail(), Notes: self.NewNotes(), Id: self.NewId
                 };
                 $.ajax({
-                    url: '/Inventory/AddProduct/',
+                    url: '/Provider/Add/',
                     type: 'POST',
                     contentType: "application/json",
                     data: JSON.stringify({ model: data }),
                     success: function (response) {
                         if (response.success) {
                             self.ShowNewError(false);
-                            self.GetProducts();
-                            self.ShowSuccessMessageAction("El producto fue guardado con éxito.");
-                            $('#addProductModal').modal('hide');
+                            self.GetData();
+                            self.ShowSuccessMessageAction(response.responseText);
+                            $('#addModal').modal('hide');
                         }
                         else {
                             self.ShowNewErrorAction(response.responseText);
                         }
+
                     }
                 });
             }
 
-            self.DeleteProduct = function () {
+            self.ShowDelete = function (data, event) {
+                var id = event.target.id;
+                self.Get(id);
+                $('#deleteModal').modal('show');
+            }
+
+            self.Get = function (id) {
+                self.NewId = id;
+                $.ajax({
+                    url: '/Provider/Get/' + id,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        self.NewName(data.Name);
+                        self.NewLegalId(data.LegalId);
+                        self.NewCountry(data.Country);
+                        self.NewContactName(data.ContactName);
+                        self.NewContactPhone(data.ContactPhone);
+                        self.NewContactEmail(data.ContactEmail);
+                        self.NewNotes(data.Notes);
+                    }
+                });
+            }
+
+            self.GetData = function () {
+                $('#mainContentArea').hide();
+                $('#mainContentLoading').show();
+                $.ajax({
+                    url: '/Provider/GetData',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        self.Elements(data);
+                        $('#mainContentArea').show();
+                        $('#mainContentLoading').hide();
+                    }
+                });
+            }
+
+            self.Delete = function () {
                 var data = {
-                    Id: self.NewProductId
+                    Id: self.NewId
                 };
                 $.ajax({
-                    url: '/Inventory/DeleteProduct/',
+                    url: '/Provider/Delete/',
                     type: 'POST',
                     contentType: "application/json",
                     data: JSON.stringify({ model: data }),
                     success: function () {
-                        self.GetProducts();
-                        self.ShowSuccessMessageAction('El producto fue eliminado con éxito.');
-                        $('#deleteProductModal').modal('hide');
+                        self.GetData();
+                        self.ShowSuccessMessageAction('El cliente fue eliminado con éxito.');
+                        $('#deleteModal').modal('hide');
                     }
                 });
             }
         }
 
-        var inventoryDashboard = new InventoryDashboard();
-        var inventoryDashboardNode = document.getElementById('inventoryDashboard');
-        ko.applyBindings(inventoryDashboard, inventoryDashboardNode);
-        inventoryDashboard.GetData();
+        var providerDashboard = new ProviderDashboard();
+        var providerDashboardNode = document.getElementById('providerDashboard');
+        ko.applyBindings(providerDashboard, providerDashboardNode);
+        providerDashboard.GetData();
     })
 </script>

@@ -1,0 +1,329 @@
+﻿
+@{
+    Layout = null;
+}
+
+<div id="proceedingDashboard">
+    <div class="card">
+        <div class="card-body">
+            <div class="alert alert-success" role="alert" data-bind="visible: ShowSucessMessage">
+                <text data-bind="text: SucessMessage"></text>
+            </div>
+            <button data-bind="click: ShowAdd" class="btn btn-info btn-lg">Agregar Gestión</button>
+            <table class="table table-bordered" style="margin-top:25px">
+                <thead>
+                    <tr>
+                        <th>
+                            # de Orden
+                        </th>
+                        <th>
+                            Institución
+                        </th>
+                        <th>
+                            Descripción del producto
+                        </th>
+                        <th>
+                            Fecha de ingreso
+                        </th>
+                        <th>
+                            Código Sanitario del producto
+                        </th>
+                        <th>
+                            Estado
+                        </th>
+                        <th width="15%"></th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: Elements">
+                    <tr>
+                        <td data-bind="text: $data.OrderNumber">
+                        </td>
+                        <td data-bind="text: $data.InstitutionName">
+                        </td>
+                        <td data-bind="text: $data.ProductDescription">
+                        </td>
+                        <td data-bind="text: $data.CreatedDate">
+                        </td>
+                        <td data-bind="text: $data.ProductSanitaryCode">
+                        </td>
+                        <td style="text-align:center">
+                            <img data-bind="visible: !($data.Paid)" src="~/Images/failIcon.png" />
+                            <img data-bind="visible: $data.Paid" src="~/Images/successIcon.jpg" />
+                        </td>
+                        <td style="text-align:center">
+                            <button data-bind="click: $parent.ShowEdit, attr: { id: $data.Id }" class="btn btn-info btn-sm">Editar</button>
+                            &nbsp;&nbsp;
+                            <button class="btn btn-danger btn-sm" data-bind="click: $parent.ShowDelete, attr: { id: $data.Id }">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="addModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Agregar/Editar Gestión
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body">
+                            <div data-bind="visible: ShowNewError" class="alert alert-danger" role="alert">
+                                <text data-bind="text: NewError"></text>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label>Descripción: <text style="color: red">*</text> </label>
+                                    <textarea class="form-control" rows="2" data-bind="value: NewOrderNumber"></textarea>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 20px">
+                                <div class="col-md-6">
+                                    <label>Institución: <text style="color: red">*</text></label>
+                                    <input class="form-control" data-bind="value: NewInstitutionName" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Producto: <text style="color: red">*</text></label>
+                                    <input class="form-control" data-bind="value: NewProductDescription" />
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 20px">
+                                <div class="col-md-6">
+                                    <label>Código Sanitario: <text style="color: red">*</text></label>
+                                    <input class="form-control" data-bind="value: NewProductSanitaryCode" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Pagada: <text style="color: red">*</text></label>
+                                    <div class="checkbox">
+                                        <label style="padding-left:0px">
+                                            <input type="checkbox" data-bind="checked: NewPaid" />
+                                            <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 20px">
+                                <div class="col-md-12">
+                                    <label>Notas:  </label>
+                                    <textarea class="form-control" data-bind="value: NewNotes" rows="2"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div style="text-align:center">
+                        <button data-bind="click: Add" class="btn btn-info">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="deleteModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Eliminar Proveedor
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body">
+                            <div data-bind="visible: ShowNewError" class="alert alert-danger" role="alert">
+                                <text data-bind="text: NewError"></text>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label>Descripción: <text style="color: red">*</text> </label>
+                                    <textarea class="form-control" rows="2" data-bind="value: NewOrderNumber" disabled></textarea>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 20px">
+                                <div class="col-md-6">
+                                    <label>Institución: <text style="color: red">*</text></label>
+                                    <input class="form-control" data-bind="value: NewInstitutionName" disabled/>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Producto: <text style="color: red">*</text></label>
+                                    <input class="form-control" data-bind="value: NewProductDescription" disabled/>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 20px">
+                                <div class="col-md-6">
+                                    <label>Código Sanitario: <text style="color: red">*</text></label>
+                                    <input class="form-control" data-bind="value: NewProductSanitaryCode" disabled/>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Pagada: <text style="color: red">*</text></label>
+                                    <div class="checkbox">
+                                        <label style="padding-left:0px">
+                                            <input type="checkbox" data-bind="checked: NewPaid" disabled/>
+                                            <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 20px">
+                                <div class="col-md-12">
+                                    <label>Notas:  </label>
+                                    <textarea class="form-control" data-bind="value: NewNotes" rows="2" disabled></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div style="text-align:center">
+                        <button data-bind="click: Delete" class="btn btn-danger">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        function ProceedingDashboard() {
+            var self = this;
+            self.Elements = ko.observableArray();
+
+            //Messages
+            self.NewError = ko.observable('');
+            self.ShowNewError = ko.observable(false);
+            self.ShowNewErrorAction = function (error) {
+                self.NewError(error);
+                self.ShowNewError(true);
+            }
+
+            self.ShowSucessMessage = ko.observable(false);
+            self.SucessMessage = ko.observable();
+
+            self.ShowSuccessMessageAction = function (message) {
+                self.ShowSucessMessage(true);
+                self.SucessMessage(message);
+            }
+
+            //New
+            self.NewId = 0;
+            self.NewOrderNumber = ko.observable();
+            self.NewInstitutionName = ko.observable();
+            self.NewProductDescription = ko.observable();
+            self.NewProductSanitaryCode = ko.observable();
+            self.NewPaid = ko.observable(false);
+            self.NewNotes = ko.observable();
+
+            self.ShowAdd = function () {
+                self.NewId = 0;
+                self.NewOrderNumber('');
+                self.NewInstitutionName('');
+                self.NewProductDescription('');
+                self.NewProductSanitaryCode('');
+                self.NewPaid(false);
+                self.NewNotes('');
+                $('#addModal').modal('show');
+            }
+
+            self.ShowEdit = function (data, event) {
+                var id = event.target.id;
+                self.Get(id);
+                $('#addModal').modal('show');
+            }
+
+            self.Add = function () {
+                self.ShowNewError(false);
+                var data = {
+                    OrderNumber: self.NewOrderNumber(), InstitutionName: self.NewInstitutionName(),
+                    ProductDescription: self.NewProductDescription(), ProductSanitaryCode: self.NewProductSanitaryCode(),
+                    Paid: self.NewPaid(), Notes: self.NewNotes(), Id: self.NewId
+                };
+                $.ajax({
+                    url: '/Proceeding/Add/',
+                    type: 'POST',
+                    contentType: "application/json",
+                    data: JSON.stringify({ model: data }),
+                    success: function (response) {
+                        if (response.success) {
+                            self.ShowNewError(false);
+                            self.GetData();
+                            self.ShowSuccessMessageAction(response.responseText);
+                            $('#addModal').modal('hide');
+                        }
+                        else {
+                            self.ShowNewErrorAction(response.responseText);
+                        }
+
+                    }
+                });
+            }
+
+            self.ShowDelete = function (data, event) {
+                var id = event.target.id;
+                self.Get(id);
+                $('#deleteModal').modal('show');
+            }
+
+            self.Get = function (id) {
+                self.NewId = id;
+                $.ajax({
+                    url: '/Proceeding/Get/' + id,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        self.NewOrderNumber(data.OrderNumber);
+                        self.NewInstitutionName(data.InstitutionName);
+                        self.NewProductDescription(data.ProductDescription);
+                        self.NewProductSanitaryCode(data.ProductSanitaryCode);
+                        self.NewPaid(data.Paid);
+                        
+                    }
+                });
+            }
+
+            self.GetData = function () {
+                $('#mainContentArea').hide();
+                $('#mainContentLoading').show();
+                $.ajax({
+                    url: '/Proceeding/GetData',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        self.Elements(data);
+                        $('#mainContentArea').show();
+                        $('#mainContentLoading').hide();
+                    }
+                });
+            }
+
+            self.Delete = function () {
+                var data = {
+                    Id: self.NewId
+                };
+                $.ajax({
+                    url: '/Proceeding/Delete/',
+                    type: 'POST',
+                    contentType: "application/json",
+                    data: JSON.stringify({ model: data }),
+                    success: function () {
+                        self.GetData();
+                        self.ShowSuccessMessageAction('El activo fue eliminado con éxito.');
+                        $('#deleteModal').modal('hide');
+                    }
+                });
+            }
+        }
+
+        var proceedingDashboard = new ProceedingDashboard();
+        var proceedingDashboardNode = document.getElementById('proceedingDashboard');
+        ko.applyBindings(proceedingDashboard, proceedingDashboardNode);
+        proceedingDashboard.GetData();
+    })
+</script>

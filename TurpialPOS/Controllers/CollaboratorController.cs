@@ -10,14 +10,14 @@ using System.Web.Script.Serialization;
 
 namespace TurpialPOS.Controllers
 {
-    public class ClientController : Controller
+    public class CollaboratorController : Controller
     {
-        private ClientRepository _clientRepository;
+        private CollabortatorRepository _collabortatorRepository;
         private readonly int storeId = 1;
 
-        public ClientController()
+        public CollaboratorController()
         {
-            _clientRepository = new ClientRepository();
+            _collabortatorRepository = new CollabortatorRepository();
         }
 
         public ActionResult Index()
@@ -25,35 +25,38 @@ namespace TurpialPOS.Controllers
             return View();
         }
 
-        public string GetClients()
+        public string GetData()
         {
-            var clients = _clientRepository.GetAll(storeId).Select(p => new
+            var providers = _collabortatorRepository.GetAll(storeId).Select(p => new
             {
-                p.Id, p.LegalId, p.Name,p.Address,p.ContactName, p.ContactPhone, p.ContactEmail
+                p.Id,
+                p.LegalId,
+                p.Name,
+                p.Address,
+                p.Phone,
+                p.WorkArea,
             });
-            return new JavaScriptSerializer().Serialize(clients);
+            return new JavaScriptSerializer().Serialize(providers);
         }
 
         [HttpGet]
-        public string GetClient(int id)
+        public string Get(int id)
         {
-            var client = _clientRepository.Get(id);
+            var collaborator = _collabortatorRepository.Get(id);
             var viewModel = new
             {
-                client.Id,
-                client.Name,
-                client.Address,
-                client.ContactName,
-                client.ContactPhone,
-                client.Notes,
-                client.ContactEmail,
-                client.LegalId
+                collaborator.Id,
+                collaborator.Name,
+                collaborator.LegalId,
+                collaborator.Address,
+                collaborator.Phone,
+                collaborator.WorkArea
             };
             return new JavaScriptSerializer().Serialize(viewModel);
         }
 
         [HttpPost]
-        public ActionResult AddClient(Client model)
+        public ActionResult Add(Collaborator model)
         {
             var validatorContext = new ValidationContext(model, serviceProvider: null, items: null);
             var results = new List<ValidationResult>();
@@ -61,24 +64,24 @@ namespace TurpialPOS.Controllers
             if (isValid)
             {
                 model.StoreId = storeId;
-                var possiblePreviousClient = _clientRepository.GetByLegalId(model.LegalId);
+                var possiblePreviousClient = _collabortatorRepository.GetByLegalId(model.LegalId);
                 if (model.Id > 0)
                 {
                     if (possiblePreviousClient != null && possiblePreviousClient.Id != model.Id)
-                        return Json(new { success = false, responseText = "Ya existe un cliente con el RUC: " + model.LegalId + "." }, JsonRequestBehavior.AllowGet);
+                        return Json(new { success = false, responseText = "Ya existe un colaborador con la cédula: " + model.LegalId + "." }, JsonRequestBehavior.AllowGet);
                     else
-                        _clientRepository.Edit(model);
+                        _collabortatorRepository.Edit(model);
                 }
                 else
                 {
                     if (possiblePreviousClient == null)
-                        _clientRepository.Add(model);
+                        _collabortatorRepository.Add(model);
                     else
                     {
-                        return Json(new { success = false, responseText = "Ya existe un cliente con el RUC:  " + model.LegalId + "." }, JsonRequestBehavior.AllowGet);
+                        return Json(new { success = false, responseText = "Ya existe un colaborador con la cédula:  " + model.LegalId + "." }, JsonRequestBehavior.AllowGet);
                     }
                 }
-                return Json(new { success = true, responseText = "El cliente se agregó con éxito." }, JsonRequestBehavior.AllowGet);
+                return Json(new { success = true, responseText = "El colaborador se agregó con éxito." }, JsonRequestBehavior.AllowGet);
             }
             else
             {
@@ -91,9 +94,9 @@ namespace TurpialPOS.Controllers
         }
 
         [HttpPost]
-        public string DeleteClient(Client model)
+        public string Delete(Client model)
         {
-            _clientRepository.Delete(model.Id);
+            _collabortatorRepository.Delete(model.Id);
             return "200";
         }
     }

@@ -34,10 +34,9 @@ namespace DAL.Repositories
                 product.CatalogNumber = productEdited.CatalogNumber;
                 product.SanitaryCode = productEdited.SanitaryCode;
                 product.Brand = productEdited.Brand;
-                product.Factory = productEdited.Factory;
-                product.Country = productEdited.Country;
                 product.Description = productEdited.Description;
                 product.Stock = productEdited.Stock;
+                product.ProviderId = productEdited.ProviderId;
                 _context.Entry(product).State = System.Data.Entity.EntityState.Modified;
                 _context.SaveChanges();                
             }

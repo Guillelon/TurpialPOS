@@ -26,50 +26,35 @@
             <ul class="nav nav-sidebar" data-nav-type="accordion">
 
                 <li class="nav-item nav-item-submenu">
-                    <a href="#/" class="nav-link menu-link parent-link"><i class="fa fa-money"></i> <span>Acciones de Caja</span></a>
-                    <ul class="nav nav-group-sub" data-submenu-title="Layouts">
-                        @if (!Model.OpenRegister && !Model.ClosedRegister)
-                        {
-                            <li class="nav-item">
-                                @if (Model.OldOpenRegister)
-                                {
-                                    <a href="#/" id="closeRegister" class="nav-link menu-link">Cerrar Caja Antigua</a>
-                                }
-                                else
-                                {
-                                    <a href="#/" id="openRegister" class="nav-link menu-link">Abrir Caja</a>
-                                }
-                            </li>
-                        }
-                        else if (Model.OpenRegister && !Model.ClosedRegister)
-                        {
-                            <li class="nav-item">
-                                <a href="#/" id="processPayment" class="nav-link menu-link">Procesar Pago</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#/" id="processRegisterExit" class="nav-link menu-link">Movimiento de Caja</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#/" id="closeRegister" class="nav-link menu-link">Cerrar Caja</a>
-                            </li>
-                        }
-                    </ul>
-                </li>
-
-                <li class="nav-item nav-item-submenu">
-                    <a href="#/" class="nav-link menu-link parent-link"><i class="fa fa-calculator"></i> <span>Inventario</span></a>
+                    <a href="#/" class="nav-link menu-link parent-link"><i class="fa fa-calculator"></i> <span>Gestión interna</span></a>
                     <ul class="nav nav-group-sub" data-submenu-title="Layouts">
                         <li class="nav-item">
-                            <a href="#/" id="/Inventory/Index" class="nav-link menu-link-custom">Ver Inventario</a>
+                            <a href="#/" id="/Inventory/Index" class="nav-link menu-link-custom">Ver Productos</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="#/" id="/Asset/Index" class="nav-link menu-link-custom">Ver Activos Empresariales</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="#/" id="/Proceeding/Index" class="nav-link menu-link-custom">Ver Gestiones Procesadas</a>
                         </li>
                     </ul>
                 </li>
 
                 <li class="nav-item nav-item-submenu">
-                    <a href="#/" class="nav-link menu-link parent-link"><i class="fa fa-user"></i> <span>Clientes</span></a>
+                    <a href="#/" class="nav-link menu-link parent-link"><i class="fa fa-book"></i> <span>Directorio</span></a>
                     <ul class="nav nav-group-sub" data-submenu-title="Layouts">
                         <li class="nav-item">
-                            <a href="#/" id="/Client/Index" class="nav-link menu-link-custom">Ver Clientes</a>
+                            <a href="#/" id="/Client/Index" class="nav-link menu-link-custom">Clientes</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="#/" id="/Provider/Index" class="nav-link menu-link-custom">Proveedores</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="#/" id="/Collaborator/Index" class="nav-link menu-link-custom">Colaboradores</a>
                         </li>
                     </ul>
                 </li>

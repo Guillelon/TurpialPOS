@@ -1,14 +1,15 @@
-﻿@{
+﻿
+@{
     Layout = null;
 }
 
-<div id="clientDashboard">
+<div id="collaboratorDashboard">
     <div class="card">
         <div class="card-body">
             <div class="alert alert-success" role="alert" data-bind="visible: ShowSucessMessage">
                 <text data-bind="text: SucessMessage"></text>
             </div>
-            <button data-bind="click: ShowAddClient" class="btn btn-info btn-lg">Agregar Cliente</button>
+            <button data-bind="click: ShowAdd" class="btn btn-info btn-lg">Agregar Colaborador</button>
             <table class="table table-bordered" style="margin-top:25px">
                 <thead>
                     <tr>
@@ -16,24 +17,21 @@
                             Nombre
                         </th>
                         <th>
-                            RUC
+                            Cédula
                         </th>
                         <th>
                             Dirección
                         </th>
                         <th>
-                            Nombre de Contacto
+                            Teléfono
                         </th>
                         <th>
-                            Teléfono de Contacto
-                        </th>
-                        <th>
-                            Email de contacto
+                            Área de trabajo
                         </th>
                         <th width="15%"></th>
                     </tr>
                 </thead>
-                <tbody data-bind="foreach: Clients">
+                <tbody data-bind="foreach: Elements">
                     <tr>
                         <td data-bind="text: $data.Name">
                         </td>
@@ -41,16 +39,14 @@
                         </td>
                         <td data-bind="text: $data.Address">
                         </td>
-                        <td data-bind="text: $data.ContactName">
+                        <td data-bind="text: $data.Phone">
                         </td>
-                        <td data-bind="text: $data.ContactPhone">
-                        </td>
-                        <td data-bind="text: $data.ContactEmail">
+                        <td data-bind="text: $data.WorkArea">
                         </td>
                         <td style="text-align:center">
-                            <button data-bind="click: $parent.ShowEditClient, attr: { id: $data.Id }" class="btn btn-info btn-sm">Editar</button>
+                            <button data-bind="click: $parent.ShowEdit, attr: { id: $data.Id }" class="btn btn-info btn-sm">Editar</button>
                             &nbsp;&nbsp;
-                            <button class="btn btn-danger btn-sm" data-bind="click: $parent.ShowDeleteClient, attr: { id: $data.Id }">Eliminar</button>
+                            <button class="btn btn-danger btn-sm" data-bind="click: $parent.ShowDelete, attr: { id: $data.Id }">Eliminar</button>
                         </td>
                     </tr>
                 </tbody>
@@ -58,11 +54,11 @@
         </div>
     </div>
 
-    <div id="addClientModal" class="modal" tabindex="-1" role="dialog">
+    <div id="addModal" class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    Agregar/Editar Cliente
+                    Agregar/Editar Proveedor
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -79,34 +75,37 @@
                                     <input class="form-control" data-bind="value: NewName" />
                                 </div>
                                 <div class="col-md-6">
-                                    <label>RUC: <text style="color: red">*</text></label>
+                                    <label>Cédula: <text style="color: red">*</text></label>
                                     <input class="form-control" data-bind="value: NewLegalId" />
                                 </div>
                             </div>
                             <div class="row" style="margin-top: 20px">
                                 <div class="col-md-6">
-                                    <label>Nombre Contacto: <text style="color: red">*</text></label>
-                                    <input class="form-control" data-bind="value: NewContactName" />
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Teléfono Contacto: <text style="color: red">*</text></label>
-                                    <input class="form-control" data-bind="value: NewContactPhone" />
-                                </div>
-                            </div>
-                            <div class="row" style="margin-top: 20px">
-                                <div class="col-md-6">
-                                    <label>Email Contacto: <text style="color: red">*</text></label>
-                                    <input data-bind="value: NewContactEmail" class="form-control" />
-                                </div>
-                                <div class="col-md-6">
                                     <label>Dirección: <text style="color: red">*</text></label>
                                     <input class="form-control" data-bind="value: NewAddress" />
                                 </div>
+                                <div class="col-md-6">
+                                    <label>Teléfono: <text style="color: red">*</text></label>
+                                    <input class="form-control" data-bind="value: NewPhone" />
+                                </div>
                             </div>
                             <div class="row" style="margin-top: 20px">
-                                <div class="col-md-12">
-                                    <label>Notas:</label>
-                                    <textarea data-bind="value: NewNotes" rows="2" class="form-control"></textarea>
+                                <div class="col-md-6">
+                                    <label>Área: <text style="color: red">*</text></label>
+                                    <select class="form-control" data-bind="value: NewWorkArea">
+                                        <option value="Aministración">
+                                            Aministración
+                                        </option>
+                                        <option value="Recepción">
+                                            Recepción
+                                        </option>
+                                        <option value="Almacén">
+                                            Almacén
+                                        </option>
+                                        <option value="Transporte">
+                                            Transporte
+                                        </option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -114,18 +113,18 @@
                 </div>
                 <div class="modal-footer">
                     <div style="text-align:center">
-                        <button data-bind="click: AddClient" class="btn btn-info">Guardar</button>
+                        <button data-bind="click: Add" class="btn btn-info">Guardar</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="deleteClientModal" class="modal" tabindex="-1" role="dialog">
+    <div id="deleteModal" class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    Eliminar Cliente
+                    Eliminar Proveedor
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -139,24 +138,24 @@
                                     <input class="form-control" data-bind="value: NewName" disabled />
                                 </div>
                                 <div class="col-md-6">
-                                    <label>RUC: <text style="color: red">*</text></label>
+                                    <label>Cédula: <text style="color: red">*</text></label>
                                     <input class="form-control" data-bind="value: NewLegalId" disabled />
                                 </div>
                             </div>
                             <div class="row" style="margin-top: 20px">
                                 <div class="col-md-6">
-                                    <label>Nombre Contacto: <text style="color: red">*</text></label>
-                                    <input class="form-control" data-bind="value: NewContactName" disabled />
+                                    <label>Dirección: <text style="color: red">*</text></label>
+                                    <input class="form-control" data-bind="value: NewAddress" disabled />
                                 </div>
                                 <div class="col-md-6">
                                     <label>Teléfono Contacto: <text style="color: red">*</text></label>
-                                    <input class="form-control" data-bind="value: NewContactPhone" disabled />
+                                    <input class="form-control" data-bind="value: NewPhone" disabled />
                                 </div>
                             </div>
                             <div class="row" style="margin-top: 20px">
                                 <div class="col-md-6">
                                     <label>Email Contacto: <text style="color: red">*</text></label>
-                                    <input data-bind="value: NewContactEmail" class="form-control" disabled />
+                                    <input data-bind="value: NewWorkArea" class="form-control" disabled />
                                 </div>
                                 <div class="col-md-6">
                                     <label>Dirección: <text style="color: red">*</text></label>
@@ -174,7 +173,7 @@
                 </div>
                 <div class="modal-footer">
                     <div style="text-align:center">
-                        <button data-bind="click: DeleteClient" class="btn btn-danger">Eliminar</button>
+                        <button data-bind="click: Delete" class="btn btn-danger">Eliminar</button>
                     </div>
                 </div>
             </div>
@@ -184,9 +183,9 @@
 
 <script>
     $(document).ready(function () {
-        function ClientDashboard() {
+        function CollaboratorDashboard() {
             var self = this;
-            self.Clients = ko.observableArray();
+            self.Elements = ko.observableArray();
 
             //Messages
             self.NewError = ko.observable('');
@@ -210,36 +209,35 @@
             self.NewLegalId = ko.observable();
             self.NewAddress = ko.observable();
             self.NewContactName = ko.observable();
-            self.NewContactPhone = ko.observable();
-            self.NewContactEmail = ko.observable();
+            self.NewPhone = ko.observable();
+            self.NewWorkArea = ko.observable();
             self.NewNotes = ko.observable();
 
-            self.ShowAddClient = function () {
+            self.ShowAdd = function () {
                 self.NewId = 0;
                 self.NewName('');
                 self.NewLegalId('');
                 self.NewAddress('');
                 self.NewContactName('');
-                self.NewContactPhone('');
-                self.NewContactEmail('');
-                $('#addClientModal').modal('show');
+                self.NewPhone('');
+                self.NewWorkArea('');
+                $('#addModal').modal('show');
             }
 
-            self.ShowEditClient = function (data, event) {
+            self.ShowEdit = function (data, event) {
                 var id = event.target.id;
-                self.GetClient(id);
-                $('#addClientModal').modal('show');
+                self.Get(id);
+                $('#addModal').modal('show');
             }
 
-            self.AddClient = function () {
+            self.Add = function () {
                 self.ShowNewError(false);
                 var data = {
                     Name: self.NewName(), LegalId: self.NewLegalId(), Address: self.NewAddress(),
-                    ContactName: self.NewContactName(), ContactPhone: self.NewContactPhone(),
-                    ContactEmail: self.NewContactEmail(), Notes: self.NewNotes(), Id: self.NewId
+                    Phone: self.NewPhone(),WorkArea: self.NewWorkArea(), Id: self.NewId
                 };
                 $.ajax({
-                    url: '/Client/AddClient/',
+                    url: '/Collaborator/Add/',
                     type: 'POST',
                     contentType: "application/json",
                     data: JSON.stringify({ model: data }),
@@ -247,8 +245,8 @@
                         if (response.success) {
                             self.ShowNewError(false);
                             self.GetData();
-                            self.ShowSuccessMessageAction("El cliente fue guardado con éxito.");
-                            $('#addClientModal').modal('hide');
+                            self.ShowSuccessMessageAction(response.responseText);
+                            $('#addModal').modal('hide');
                         }
                         else {
                             self.ShowNewErrorAction(response.responseText);
@@ -258,26 +256,24 @@
                 });
             }
 
-            self.ShowDeleteClient = function (data, event) {
+            self.ShowDelete = function (data, event) {
                 var id = event.target.id;
-                self.GetClient(id);
-                $('#deleteClientModal').modal('show');
+                self.Get(id);
+                $('#deleteModal').modal('show');
             }
 
-            self.GetClient = function (id) {
+            self.Get = function (id) {
                 self.NewId = id;
                 $.ajax({
-                    url: '/Client/GetClient/' + id,
+                    url: '/Collaborator/Get/' + id,
                     type: 'GET',
                     dataType: 'json',
                     success: function (data) {
                         self.NewName(data.Name);
                         self.NewLegalId(data.LegalId);
                         self.NewAddress(data.Address);
-                        self.NewContactName(data.ContactName);
-                        self.NewContactPhone(data.ContactPhone);
-                        self.NewContactEmail(data.ContactEmail);
-                        self.NewNotes(data.Notes);
+                        self.NewPhone(data.Phone);
+                        self.NewWorkArea(data.WorkArea);
                     }
                 });
             }
@@ -286,38 +282,38 @@
                 $('#mainContentArea').hide();
                 $('#mainContentLoading').show();
                 $.ajax({
-                    url: '/Client/GetClients',
+                    url: '/Collaborator/GetData',
                     type: 'GET',
                     dataType: 'json',
                     success: function (data) {
-                        self.Clients(data);
+                        self.Elements(data);
                         $('#mainContentArea').show();
                         $('#mainContentLoading').hide();
                     }
                 });
             }
 
-            self.DeleteClient = function () {
+            self.Delete = function () {
                 var data = {
                     Id: self.NewId
                 };
                 $.ajax({
-                    url: '/Client/DeleteClient/',
+                    url: '/Collaborator/Delete/',
                     type: 'POST',
                     contentType: "application/json",
                     data: JSON.stringify({ model: data }),
                     success: function () {
                         self.GetData();
                         self.ShowSuccessMessageAction('El cliente fue eliminado con éxito.');
-                        $('#deleteClientModal').modal('hide');
+                        $('#deleteModal').modal('hide');
                     }
                 });
             }
         }
 
-        var clientDashboard = new ClientDashboard();
-        var clientDashboardNode = document.getElementById('clientDashboard');
-        ko.applyBindings(clientDashboard, clientDashboardNode);
-        clientDashboard.GetData();
+        var collaboratorDashboard = new CollaboratorDashboard();
+        var collaboratorDashboardNode = document.getElementById('collaboratorDashboard');
+        ko.applyBindings(collaboratorDashboard, collaboratorDashboardNode);
+        collaboratorDashboard.GetData();
     })
 </script>

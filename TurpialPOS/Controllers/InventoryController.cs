@@ -4,6 +4,7 @@ using DAL.Repositories;
 using Rotativa.Options;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using System.Net;
@@ -17,11 +18,13 @@ namespace TurpialPOS.Controllers
     public class InventoryController : Controller
     {
         private ProductRepository _productRepository;
+        private ProviderRepository _providerRepository;
         private readonly int storeId = 1;
 
         public InventoryController()
         {
             _productRepository = new ProductRepository();
+            _providerRepository = new ProviderRepository();
         }
 
         public ActionResult Index()
@@ -34,31 +37,41 @@ namespace TurpialPOS.Controllers
         {
             var products = _productRepository.GetAll(storeId).Select(p => new
             {
-                p.Id, p.Name, p.Code, p.OrderNumber, p.CatalogNumber, p.SanitaryCode,
-                p.Brand, p.Factory, p.Country, p.Description, p.Stock, Checked = false
+                p.Id,
+                p.Name,
+                p.Code,
+                p.OrderNumber,
+                p.CatalogNumber,
+                p.SanitaryCode,
+                p.Brand,
+                p.Description,
+                p.Stock,
+                ProviderName = p.Provider.Name,
+                ProviderCountry = p.Provider.Country,
+                Checked = false
             });
             return new JavaScriptSerializer().Serialize(products);
         }
-
+        
         [HttpGet]
         public string GetProduct(int id)
         {
             var product = _productRepository.Get(id);
-            var viewModel = new {
+            var viewModel = new
+            {
                 product.Name,
                 product.Code,
                 product.OrderNumber,
                 product.CatalogNumber,
                 product.SanitaryCode,
                 product.Brand,
-                product.Factory,
-                product.Country,
-                product.Description, 
-                product.Stock
+                product.Description,
+                product.Stock,
+                product.ProviderId
             };
             return new JavaScriptSerializer().Serialize(viewModel);
         }
-        
+
         [HttpGet]
         public string GetProductTypes()
         {
@@ -67,28 +80,42 @@ namespace TurpialPOS.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddProduct(Product data)
+        public ActionResult AddProduct(Product model)
         {
-            data.StoreId = storeId;
-            //Check if code Exists
-            var possiblePreviousProduct = _productRepository.GetByCode(data.Code);
-            if (data.Id > 0)
+            var validatorContext = new ValidationContext(model, serviceProvider: null, items: null);
+            var results = new List<ValidationResult>();
+            var isValid = Validator.TryValidateObject(model, validatorContext, results, true);
+            if (isValid)
             {
-                if(possiblePreviousProduct != null && possiblePreviousProduct.Id != data.Id)
-                    return Json(new { success = false, responseText = "Ya existe en el inventario un producto con el código " + data.Code + "." }, JsonRequestBehavior.AllowGet);
+                model.StoreId = storeId;
+                //Check if code Exists
+                var possiblePreviousProduct = _productRepository.GetByCode(model.Code);
+                if (model.Id > 0)
+                {
+                    if (possiblePreviousProduct != null && possiblePreviousProduct.Id != model.Id)
+                        return Json(new { success = false, responseText = "Ya existe en el inventario un producto con el código " + model.Code + "." }, JsonRequestBehavior.AllowGet);
+                    else
+                        _productRepository.Edit(model);
+                }
                 else
-                    _productRepository.Edit(data);
+                {
+                    if (possiblePreviousProduct == null)
+                        _productRepository.Add(model);
+                    else
+                    {
+                        return Json(new { success = false, responseText = "Ya existe en el inventario un producto con el código " + model.Code + "." }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                return Json(new { success = true, responseText = "El producto se agregó con éxito en el inventario." }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                if (possiblePreviousProduct == null)
-                    _productRepository.Add(data);
-                else
-                {
-                    return Json(new { success = false, responseText = "Ya existe en el inventario un producto con el código " + data.Code + "." }, JsonRequestBehavior.AllowGet);
-                }
+                var result = results.FirstOrDefault();
+                var message = "Ha ocurrido un problema, estamos trabajando para resolverlo";
+                if (result != null)
+                    message = result.ErrorMessage;
+                return Json(new { success = false, responseText = message }, JsonRequestBehavior.AllowGet);
             }
-            return Json(new { success = true, responseText = "El producto se agregó con éxito en el inventario." }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -119,19 +146,19 @@ namespace TurpialPOS.Controllers
             {
                 FileName = "PDF_Output.pdf",
                 CustomSwitches = cusomtSwitches
-            }; 
+            };
         }
 
         [AllowAnonymous]
         public ActionResult ProductPrintFooter()
         {
-            return View();  
+            return View();
         }
 
         [AllowAnonymous]
         public ActionResult ProductPrintHeader()
         {
             return View();
-        }        
+        }
     }
 }

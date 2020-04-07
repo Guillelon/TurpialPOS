@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Models
 {
-    public class Client: MasterEntity
+    public class Provider: MasterEntity
     {
         [Required(ErrorMessage = "Los campos con asterisco son mandatorios")]
         [MaxLength(50, ErrorMessage = "El RUC tiene un límite de 50 caracteres")]
@@ -16,8 +16,8 @@ namespace DAL.Models
         [MaxLength(50, ErrorMessage = "El nombre tiene un límite de 50 caracteres")]
         public string Name { get; set; }
         [Required(ErrorMessage = "Los campos con asterisco son mandatorios")]
-        [MaxLength(75, ErrorMessage = "La dirección tiene un límite de 75 caracteres")]
-        public string Address { get; set; }
+        [MaxLength(75, ErrorMessage = "El país tiene un límite de 75 caracteres")]
+        public string Country { get; set; }
         [Required(ErrorMessage = "Los campos con asterisco son mandatorios")]
         [MaxLength(50, ErrorMessage = "El nombre de contacto tiene un límite de 75 caracteres")]
         public string ContactName { get; set; }
@@ -29,9 +29,6 @@ namespace DAL.Models
         public string ContactEmail { get; set; }
         public string Notes { get; set; }
 
-        public Client()
-        {
-
-        }
+        public virtual IList<Product> Products { get; set; }
     }
 }

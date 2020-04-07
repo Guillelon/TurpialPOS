@@ -61,5 +61,10 @@ namespace DAL.Repositories
                 _context.SaveChanges();
             }
         }
+
+        public Client GetByLegalId(string legalId)
+        {
+            return _context.Client.Where(c => c.LegalId == legalId).FirstOrDefault();
+        }
     }
 }

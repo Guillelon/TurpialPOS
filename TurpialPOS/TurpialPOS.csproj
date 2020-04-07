@@ -172,11 +172,15 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AssetController.cs" />
     <Compile Include="Controllers\ClientController.cs" />
+    <Compile Include="Controllers\CollaboratorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
+    <Compile Include="Controllers\ProceedingController.cs" />
+    <Compile Include="Controllers\ProviderController.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -196,6 +200,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap_limitless.css" />
     <Content Include="Content\bootstrap_limitless.min.css" />
+    <Content Include="Content\CheckBoxAdvanced.css" />
     <Content Include="Content\colors.css" />
     <Content Include="Content\colors.min.css" />
     <Content Include="Content\components.css" />
@@ -215,6 +220,7 @@
     <Content Include="Images\checkLogo.png" />
     <Content Include="Images\creditCardLogo.png" />
     <Content Include="Images\debitCardLogo.png" />
+    <Content Include="Images\failIcon.png" />
     <Content Include="Images\iFarmaLabsLogo.png" />
     <Content Include="Images\MoneyIcons\failIcon.png" />
     <Content Include="Images\MoneyIcons\FiftyBill.png" />
@@ -232,6 +238,7 @@
     <Content Include="Images\MoneyIcons\TenCents.png" />
     <Content Include="Images\MoneyIcons\TwentyBill.png" />
     <Content Include="Images\ProductReportFooter.JPG" />
+    <Content Include="Images\successIcon.jpg" />
     <Content Include="Rotativa\help-wkhtmltoimage.txt" />
     <Content Include="Rotativa\help-wkhtmltopdf.txt" />
     <Content Include="Rotativa\wkhtmltoimage.exe" />
@@ -308,6 +315,10 @@
     <Content Include="Views\Inventory\ProductPrint.cshtml" />
     <Content Include="Views\Inventory\ProductPrintFooter.cshtml" />
     <Content Include="Views\Inventory\ProductPrintHeader.cshtml" />
+    <Content Include="Views\Provider\Index.cshtml" />
+    <Content Include="Views\Collaborator\Index.cshtml" />
+    <Content Include="Views\Asset\Index.cshtml" />
+    <Content Include="Views\Proceeding\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

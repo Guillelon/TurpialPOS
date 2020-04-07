@@ -20,5 +20,9 @@ namespace DAL.Models
         public DbSet<RegisterCashExit> RegisterCashExit { get; set; }
         public DbSet<PaymentType> PaymentType { get; set; }
         public DbSet<Client> Client { get; set; }
+        public DbSet<Provider> Provider { get; set; }
+        public DbSet<Collaborator> Collaborator { get; set; }
+        public DbSet<Proceeding> Proceeding { get; set; }
+        public DbSet<Asset> Asset { get; set; }
     }
 }

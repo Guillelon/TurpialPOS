@@ -1,0 +1,255 @@
+﻿
+@{
+    Layout = null;
+}
+
+<div id="assetDashboard">
+    <div class="card">
+        <div class="card-body">
+            <div class="alert alert-success" role="alert" data-bind="visible: ShowSucessMessage">
+                <text data-bind="text: SucessMessage"></text>
+            </div>
+            <button data-bind="click: ShowAdd" class="btn btn-info btn-lg">Agregar Activo</button>
+            <table class="table table-bordered" style="margin-top:25px">
+                <thead>
+                    <tr>
+                        <th>
+                            Descripción
+                        </th>
+                        <th>
+                            Oficina
+                        </th>
+                        <th>
+                            Área de ubicación
+                        </th>
+                        <th width="15%"></th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: Elements">
+                    <tr>
+                        <td data-bind="text: $data.Description">
+                        </td>
+                        <td data-bind="text: $data.Office">
+                        </td>
+                        <td data-bind="text: $data.Area">
+                        <td style="text-align:center">
+                            <button data-bind="click: $parent.ShowEdit, attr: { id: $data.Id }" class="btn btn-info btn-sm">Editar</button>
+                            &nbsp;&nbsp;
+                            <button class="btn btn-danger btn-sm" data-bind="click: $parent.ShowDelete, attr: { id: $data.Id }">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="addModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Agregar/Editar Proveedor
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body">
+                            <div data-bind="visible: ShowNewError" class="alert alert-danger" role="alert">
+                                <text data-bind="text: NewError"></text>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label>Descripción: <text style="color: red">*</text> </label>
+                                    <textarea class="form-control" rows="2" data-bind="value: NewDescription"></textarea>                                    
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 20px">
+                                <div class="col-md-6">
+                                    <label>Sucursal: <text style="color: red">*</text></label>
+                                    <input class="form-control" data-bind="value: NewOffice" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Área: <text style="color: red">*</text></label>
+                                    <input class="form-control" data-bind="value: NewArea" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div style="text-align:center">
+                        <button data-bind="click: Add" class="btn btn-info">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="deleteModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Eliminar Proveedor
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label>Descripción: <text style="color: red">*</text> </label>
+                                    <textarea class="form-control" rows="2" data-bind="value: NewDescription" disabled></textarea>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 20px">
+                                <div class="col-md-6">
+                                    <label>Sucursal: <text style="color: red">*</text></label>
+                                    <input class="form-control" data-bind="value: NewOffice" disabled/>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Área: <text style="color: red">*</text></label>
+                                    <input class="form-control" data-bind="value: NewArea" disabled/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div style="text-align:center">
+                        <button data-bind="click: Delete" class="btn btn-danger">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        function AssetDashboard() {
+            var self = this;
+            self.Elements = ko.observableArray();
+
+            //Messages
+            self.NewError = ko.observable('');
+            self.ShowNewError = ko.observable(false);
+            self.ShowNewErrorAction = function (error) {
+                self.NewError(error);
+                self.ShowNewError(true);
+            }
+
+            self.ShowSucessMessage = ko.observable(false);
+            self.SucessMessage = ko.observable();
+
+            self.ShowSuccessMessageAction = function (message) {
+                self.ShowSucessMessage(true);
+                self.SucessMessage(message);
+            }
+
+            //New
+            self.NewId = 0;
+            self.NewDescription = ko.observable();
+            self.NewOffice = ko.observable();
+            self.NewArea = ko.observable();
+
+            self.ShowAdd = function () {
+                self.NewId = 0;
+                self.NewDescription('');
+                self.NewOffice('');
+                self.NewArea('');
+                $('#addModal').modal('show');
+            }
+
+            self.ShowEdit = function (data, event) {
+                var id = event.target.id;
+                self.Get(id);
+                $('#addModal').modal('show');
+            }
+
+            self.Add = function () {
+                self.ShowNewError(false);
+                var data = {
+                    Description: self.NewDescription(), Office: self.NewOffice(), Area: self.NewArea(), Id: self.NewId
+                };
+                $.ajax({
+                    url: '/Asset/Add/',
+                    type: 'POST',
+                    contentType: "application/json",
+                    data: JSON.stringify({ model: data }),
+                    success: function (response) {
+                        if (response.success) {
+                            self.ShowNewError(false);
+                            self.GetData();
+                            self.ShowSuccessMessageAction(response.responseText);
+                            $('#addModal').modal('hide');
+                        }
+                        else {
+                            self.ShowNewErrorAction(response.responseText);
+                        }
+
+                    }
+                });
+            }
+
+            self.ShowDelete = function (data, event) {
+                var id = event.target.id;
+                self.Get(id);
+                $('#deleteModal').modal('show');
+            }
+
+            self.Get = function (id) {
+                self.NewId = id;
+                $.ajax({
+                    url: '/Asset/Get/' + id,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        self.NewDescription(data.Description);
+                        self.NewOffice(data.Office);
+                        self.NewArea(data.Area);
+                    }
+                });
+            }
+
+            self.GetData = function () {
+                $('#mainContentArea').hide();
+                $('#mainContentLoading').show();
+                $.ajax({
+                    url: '/Asset/GetData',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        self.Elements(data);
+                        $('#mainContentArea').show();
+                        $('#mainContentLoading').hide();
+                    }
+                });
+            }
+
+            self.Delete = function () {
+                var data = {
+                    Id: self.NewId
+                };
+                $.ajax({
+                    url: '/Asset/Delete/',
+                    type: 'POST',
+                    contentType: "application/json",
+                    data: JSON.stringify({ model: data }),
+                    success: function () {
+                        self.GetData();
+                        self.ShowSuccessMessageAction('El activo fue eliminado con éxito.');
+                        $('#deleteModal').modal('hide');
+                    }
+                });
+            }
+        }
+
+        var assetDashboard = new AssetDashboard();
+        var assetDashboardNode = document.getElementById('assetDashboard');
+        ko.applyBindings(assetDashboard, assetDashboardNode);
+        assetDashboard.GetData();
+    })
+</script>
